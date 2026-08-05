@@ -1,0 +1,71 @@
+{
+  "package": "MALF_Definitive_v2_0",
+  "version": "2.0",
+  "released": "2026-06-15",
+  "supersedes": "MALF_Three_Part_Design_Set_v1_5",
+  "deprecates": [
+    "WaveBehaviorSnapshot",
+    "continuation_regime",
+    "boundary_pressure_regime",
+    "directional_continuity_regime",
+    "stagnation_regime",
+    "transition_regime (作为 v1.5 行为 bucket)",
+    "birth_quality_regime",
+    "life_state",
+    "position_quadrant"
+  ],
+  "files": [
+    {
+      "path": "MALF_00_Bridge_v2_0.md",
+      "title": "全景导航",
+      "audience": "所有人",
+      "lines_target": "≤ 250"
+    },
+    {
+      "path": "MALF_01_Core_v2_0.md",
+      "title": "L1 Core 结构状态机",
+      "audience": "实现者必读",
+      "encoding_prefix": "D / T / O",
+      "delta_from_v1_5": "语义不动，只澄清表达"
+    },
+    {
+      "path": "MALF_02_Range_v2_0.md",
+      "title": "L1b 震荡区间一等公民",
+      "audience": "实现者必读",
+      "encoding_prefix": "R",
+      "delta_from_v1_5": "新文件 / transition 升格"
+    },
+    {
+      "path": "MALF_03_Lifespan_v2_0.md",
+      "title": "L1c 双轨户口 (WaveLifespan + RangeLifespan)",
+      "audience": "实现者必读",
+      "encoding_prefix": "L / RL",
+      "delta_from_v1_5": "新增 RangeLifespan + 移除 life_state / position_quadrant"
+    },
+    {
+      "path": "MALF_04_Probability_v2_0.md",
+      "title": "L1d Probability 概率层",
+      "audience": "下游 PAS / Signal 必读",
+      "encoding_prefix": "P",
+      "delta_from_v1_5": "全新层，替代 v1.5 6 regime"
+    },
+    {
+      "path": "MALF_05_Service_v2_0.md",
+      "title": "Service 对外接口",
+      "audience": "下游所有消费者必读",
+      "encoding_prefix": "S",
+      "delta_from_v1_5": "WaveProbabilitySnapshot 替换 WaveBehaviorSnapshot"
+    }
+  ],
+  "core_iron_laws": [
+    "比较一律严格 < / >, 等于不触发",
+    "guard 唯一: 只有确认的 HL/LH 才替换 guard",
+    "新 wave 必须 active_candidate + 严格突破对侧边界",
+    "Range 的 boundary 演化不改 Core 状态机判定",
+    "rank 是历史位置不是概率",
+    "对照样本不足 → 概率字段 None, 严禁 fallback",
+    "MALF 永不输出 strength_score / setup / accept-reject / 仓位 / 盈亏",
+    "WaveProbabilitySnapshot 是 MALF 唯一对外契约, 任何下游不得写回 MALF 表"
+  ],
+  "single_file_mirror": "G:\\Asteria-malf-pas\\docs\\02-module-design\\MALF_DESIGN.md"
+}

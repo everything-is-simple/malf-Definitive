@@ -1,0 +1,67 @@
+{
+  "asset_set": "MALF_Three_Part_Design_Set_v1_5",
+  "created_date": "2026-05-16",
+  "status": "successor_authority_definition",
+  "scope": "MALF v1.5 wave_behavior_snapshot successor design set",
+  "governance_card": "malf-v1-5-wave-behavior-snapshot-card-20260516-01",
+  "authority_relationship": {
+    "current_structure_anchor": "H:/Malf-Pas-Validated/MALF_Three_Part_Design_Set_v1_4",
+    "predecessor_original_reference": "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_4",
+    "summary": "v1.5 keeps MALF v1.4 immutable and adds a read-only wave_behavior_snapshot layer for downstream PAS interpretation."
+  },
+  "principles": [
+    "MALF v1.4 remains the immutable structure anchor.",
+    "MALF v1.5 publishes structural behavior facts only.",
+    "PAS reads MALF outputs only.",
+    "Signal does not own MALF semantics.",
+    "No runtime proof is implied.",
+    "No formal DB mutation is authorized.",
+    "No broker, order, position, fill, or profit claim is implied."
+  ],
+  "files": [
+    {
+      "path": "MALF_00_Three_Documents_Bridge_v1_5.md",
+      "role": "entrypoint and governance bridge"
+    },
+    {
+      "path": "MALF_01_Core_Definitions_Theorems_v1_5.md",
+      "role": "core-side structural behavior definitions"
+    },
+    {
+      "path": "MALF_01B_Core_Operational_Boundary_Rules_v1_5.md",
+      "role": "operational boundary rules for wave_behavior_snapshot derivation"
+    },
+    {
+      "path": "MALF_02_Lifespan_Stats_Definitions_Theorems_v1_5.md",
+      "role": "lifespan-side behavior regimes and birth-quality definitions"
+    },
+    {
+      "path": "MALF_03_System_Service_Interface_v1_5.md",
+      "role": "read-only service interface for WaveBehaviorSnapshot"
+    },
+    {
+      "path": "MALF_04_Core_Chart_View_v1_5.md",
+      "role": "core chart view"
+    },
+    {
+      "path": "MALF_05_Lifespan_Chart_View_v1_5.md",
+      "role": "lifespan chart view"
+    },
+    {
+      "path": "MALF_06_Service_Chart_View_v1_5.md",
+      "role": "service chart view"
+    },
+    {
+      "path": "MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_5.md",
+      "role": "delta review and implementation surface summary"
+    }
+  ],
+  "forbidden_interpretations": [
+    "Do not treat this package as runtime proof.",
+    "Do not treat this package as a DuckDB, SQLite, or Parquet schema migration.",
+    "Do not treat this package as a PAS strength/weakness scorer.",
+    "Do not use this package to authorize formal DB mutation.",
+    "Do not use this package to authorize broker, live trading, paper-live, orders, positions, fills, or profit claims.",
+    "Do not use this package to rewrite or replace MALF v1.4."
+  ]
+}

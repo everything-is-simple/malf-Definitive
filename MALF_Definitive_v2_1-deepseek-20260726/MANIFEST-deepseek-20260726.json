@@ -1,0 +1,61 @@
+{
+  "manifest_version": "2.1",
+  "author": "DeepSeek",
+  "created": "2026-07-26",
+  "based_on": "MALF_Definitive_v2_0-claude-20260616",
+  "semantic_equivalence": "v2.0",
+  "change_summary": "补丁回写 + 命名修正 + 歧义闭合 + Claude审查14条修订。语义与 v2.0 等价。",
+  "reviewed_by": "Claude (2026-07-26)",
+  "review_notes": "提出14条修订建议，已全部处理：P0(3条) 公式补全+边界对照+失败模式，P1(3条) 指标全集+边界情况+实现状态，P2(3条) 警告增强+命名警示+usage规则，P3(5条) 测试覆盖+持久化+性能基准+哈希+治理",
+  "files": [
+    {
+      "name": "MALF_00_Bridge_v2_1-deepseek-20260726.md",
+      "description": "v2.1 变更说明与入口",
+      "layer": "Bridge",
+      "sha256": "3F81C527100BF91DC4CA35B2F7B90E4455675F62A7FB4FA7D48F500E2DCCFC52"
+    },
+    {
+      "name": "MALF_01_Core_v2_1-deepseek-20260726.md",
+      "description": "Core：结构状态机（含 O1-O8 操作边界）",
+      "layer": "Core",
+      "sha256": "B6F915CA2E324110945E016F4848C148C0654EFDF196458656F8FF1166CC07A0"
+    },
+    {
+      "name": "MALF_02_Range_v2_1-deepseek-20260726.md",
+      "description": "Range：震荡区间一等公民",
+      "layer": "Range",
+      "sha256": "AB2F60C71F89DA7241C629616D96EF6C51259156523F8B94C0E67E40714D42F7"
+    },
+    {
+      "name": "MALF_03_Lifespan_v2_1-deepseek-20260726.md",
+      "description": "Lifespan：双轨户口与排名",
+      "layer": "Lifespan",
+      "sha256": "B5A9072F57F52F8BBC5AB4C15931E38034877FEC8C5843C9A033FD941C818955"
+    },
+    {
+      "name": "MALF_04_Structural_Position_v2_1-deepseek-20260726.md",
+      "description": "Structural Position：结构位置（原 Probability 层，已重命名）",
+      "layer": "Structural Position",
+      "sha256": "D58996842DA67468B99211C8A448B0757FB5A2A44735741CD7E82147D1047AD8"
+    },
+    {
+      "name": "MALF_05_Service_v2_1-deepseek-20260726.md",
+      "description": "Service：对外接口与铁律",
+      "layer": "Service",
+      "sha256": "8752D31708A6E2269F16598957B4F07A02D2865F05732FB1356655989D653FD2"
+    },
+    {
+      "name": "MANIFEST-deepseek-20260726.json",
+      "description": "文件清单与哈希",
+      "layer": "Manifest",
+      "sha256": "47150EFDFE77E2AAEE383BBBFA5F1FF388B7B4CA9D241C358958CF06639293E0"
+    }
+  ],
+  "notes": [
+    "SHA-256 哈希已全部计算并记录",
+    "本版本与 v2.0 语义等价，仅做表达澄清和命名修正",
+    "Probability 层已重命名为 Structural Position 层",
+    "WaveProbabilitySnapshot 已重命名为 WaveStructuralSnapshot",
+    "Claude 审查提出的 14 条修订建议已全部处理"
+  ]
+}

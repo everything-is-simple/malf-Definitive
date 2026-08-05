@@ -1,0 +1,65 @@
+{
+  "asset_set": "MALF_Three_Part_Design_Set_v1_4",
+  "created_date": "2026-05-03",
+  "status": "authority_definition_upgrade",
+  "scope": "MALF Core operational boundary rules",
+  "authority_relationship": {
+    "inherits_from": "H:/Asteria-Validated/MALF_Three_Part_Design_Set_v1_3",
+    "normative_delta": "MALF_01B_Core_Operational_Boundary_Rules_v1_4.md",
+    "summary": "v1.4 keeps v1.3 semantic authority and adds Core operational boundary rules for implementation, audit, replay, and snapshot contracts."
+  },
+  "runtime_evidence_boundary": {
+    "current_runtime_evidence": "docs/04-execution/records/malf/malf-v1-3-formal-rebuild-closeout-20260502-01.conclusion.md",
+    "v1_4_runtime_proof_status": "not executed",
+    "week_month_proof_status": "not executed",
+    "downstream_authorization": "not authorized"
+  },
+  "files": [
+    {
+      "path": "MALF_00_Three_Documents_Bridge_v1_4.md",
+      "role": "entrypoint and governance boundary"
+    },
+    {
+      "path": "MALF_01_Core_Definitions_Theorems_v1_4.md",
+      "role": "v1.3 Core semantic baseline carried forward"
+    },
+    {
+      "path": "MALF_01B_Core_Operational_Boundary_Rules_v1_4.md",
+      "role": "v1.4 normative operational boundary addendum"
+    },
+    {
+      "path": "MALF_02_Lifespan_Stats_Definitions_Theorems_v1_4.md",
+      "role": "v1.3 Lifespan semantic baseline carried forward"
+    },
+    {
+      "path": "MALF_03_System_Service_Interface_v1_4.md",
+      "role": "v1.3 Service interface baseline carried forward"
+    },
+    {
+      "path": "MALF_04_Core_Chart_View_v1_4.md",
+      "role": "Core chart view baseline carried forward"
+    },
+    {
+      "path": "MALF_05_Lifespan_Chart_View_v1_4.md",
+      "role": "Lifespan chart view baseline carried forward"
+    },
+    {
+      "path": "MALF_06_Service_Chart_View_v1_4.md",
+      "role": "Service chart view baseline carried forward"
+    },
+    {
+      "path": "MALF_07_Definition_Theorem_Review_and_Implementation_Delta_v1_4.md",
+      "role": "definition/theorem review baseline carried forward with v1.4 delta referenced by bridge"
+    }
+  ],
+  "pdf_status": {
+    "generated": false,
+    "reason": "No verified Markdown-to-PDF converter was available in the current PATH during this authority sync. Existing v1.3 PDFs were not copied or renamed to avoid false v1.4 PDF evidence."
+  },
+  "forbidden_interpretations": [
+    "Do not treat this package as v1.4 runtime proof.",
+    "Do not treat this package as a DuckDB schema migration.",
+    "Do not treat this package as week/month proof.",
+    "Do not use this package to authorize Position construction, downstream construction, or full-chain pipeline runtime."
+  ]
+}
