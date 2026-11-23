@@ -1,46 +1,74 @@
-# malf-Definitive — MALF 权威定义全集（v1.0–v2.1）
+# MALF Definitive 归档说明
 
-> **远端仓库**: https://github.com/everything-is-simple/malf-Definitive
-> **本地镜像**: `Z:\ai-malf-riskbench-Definitive\malf-Definitive（v1.0-v2.1）`
-> **只读性质**: 本仓库是 MALF 领域权威定义的历史与现行全集，**只读**；任何修改须走版本治理流程（Bridge §8）。
-
-## 目录结构（7 个版本）
-
-| 目录 | 版本 | 定位 | 文件 |
-|------|------|------|------|
-| `MALF_Three_Part_Design_Set_v1_0` | v1.0 | 梦开始的地方：波段标尺四图版（PDF）+ 图示化重生成 | 5 |
-| `MALF_Three_Part_Design_Set_v1_2` | v1.2/1.3 过渡 | 三文档结构（Bridge + Core v1.3 定稿 + Lifespan + Service） | 4 |
-| `MALF_Three_Part_Design_Set_v1_3` | v1.3 | 双边界模型诞生版（三件套 + 3 Chart View + Review） | 15 |
-| `MALF_Three_Part_Design_Set_v1_4` | v1.4 | O1-O8 操作边界（v2.1 §9 直接来源） | 10 |
-| `MALF_Three_Part_Design_Set_v1_5` | v1.5 | wave_behavior_snapshot（v2.0/v2.1 正式废弃） | 10 |
-| `MALF_Definitive_v2_0-claude-20260616` | v2.0 | Probability 层、Range 一等公民、双轨 Lifespan | 7 |
-| `MALF_Definitive_v2_1-deepseek-20260726` | **v2.1（现行权威）** | 当前唯一权威；与 v2.0 语义等价（结构层） | 8 |
-
-## 权威链
-
-1. **v2.1 Definitive**（`MALF_Definitive_v2_1-deepseek-20260726/`）= 领域语义最高权威；SHA-256 固定于主仓 `docs/02-权威来源登记.md`
-2. v2.0 = v2.1 语义等价基准（Probability → Structural Position 命名 + 补丁回写）
-3. v1.4 = O1-O8 操作边界来源；v1.3 = 双边界模型来源；v1.5 = 废弃内容记录（6 regime/life_state/quadrant/WaveBehaviorSnapshot）
-4. v1.0-v1.2 = 演进早期（波段标尺/三文档）；对齐关系见主仓 `docs/03/04/05` 矩阵
-
-## 版本演进验证（主仓 T9 系列，2026-08-05）
-
-```
-v1.0 → v1.2 → v1.3 → v1.4 → v1.5 → v2.0 → v2.1
- ✅     ✅     ✅     ✅     ✅     ✅核对  权威
-```
-
-- T9.1：v1.0 → v2.1 对齐（33 条承接 + 5 裁决点进化淘汰）
-- T9.2：v1.0 图示化重生成
-- T9.3：v1.2 vs v2.1 对比（F1/F2/F3 裁决）
-- T9.4-T9.7：v1.2/v1.3/v1.4/v1.5 按 v2.1 修订版
-- T9.8：v2.0 vs v2.1 语义等价核对（H1-H5 裁决）
-
-## 与本仓库的关系
-
-- 主仓 `github.com/everything-is-simple/ai-malf-riskbench`（AI MALF RiskBench 工程仓）通过 AGENTS.md §3/§4 引用本仓库为只读权威源
-- 本仓库不包含任何代码实现、数据库或运行产物；仅语义与历史定义
+**归档日期**: 2026-11-23  
+**状态**: 🔒 完整封存
 
 ---
 
-**登记**: 2026-08-05（用户建立集中权威目录 + 新建远端库；T9 系列授权初始化与推送）
+## 📂 目录结构
+
+### ✅ 当前权威 (v3.0)
+
+**MALF-v3.0-Definitive/** - 终极定义
+- Mini版: 10概念+3功能+1层 (完整)
+- Plus版: 12概念+5功能+2层 (完整)
+- Pro版: 参考说明
+- 术语表: 完整 (中英+演化+通俗)
+- 图解: 完整 (6个核心图)
+
+**压缩包**: MALF-v3.0-Definitive-2026-11-23-2203.zip
+
+---
+
+### 📚 历史版本 (归档参考)
+
+| 版本 | 核心变化 | 状态 |
+|------|---------|------|
+| v1.0_GraphicCore_SingleFile | 图解版，最简洁 | 参考 |
+| v1.2_ThreeLayer_Split | 三层分离 | 参考 |
+| v1.3_GuardPrecision_Charts | 守护点精确+图表 | 参考 |
+| v1.4_BoundaryRules | 边界规则 | 参考 |
+| v1.5_BehaviorBucket | 行为bucket | 参考 |
+| v2.0_FiveLayer_Range_Probability | 五层+Range+概率 | 参考 |
+| v2.1_StructuralPosition_Implemented | 结构位置+已实现 | 参考 |
+
+---
+
+### 📖 文档
+
+- **MALF-VERSION-EVOLUTION.md** - 完整演化史
+- **MALF-FINAL-MINIMAL-SPEC.md** - 最终规格
+- **VERSION-NAMING-GUIDE.md** - 命名指南
+- **ULTIMATE-TRUTH-GENEALOGY.md** - 终极真相
+
+---
+
+## 🎯 使用指南
+
+### 要实现MALF？
+
+→ 看 MALF-v3.0-Definitive/
+
+### 要了解演化？
+
+→ 看 MALF-VERSION-EVOLUTION.md
+
+### 要参考历史？
+
+→ 看 MALF_v1.0_* 到 MALF_v2.1_* 目录
+
+---
+
+## 🔗 外部资源
+
+| 资源 | 位置 |
+|------|------|
+| v2.1实现 | Sperandeo-malf-engine-未完终结 |
+| 余年框架 | Darvas-box-trading/docs/66-lifespan-framework.md |
+| 原书 | 2011-usa-斯波朗迪-专业投机原理 |
+
+---
+
+**状态**: 🔒 完整归档
+
+**下一步**: 解压MALF-v3.0即可使用
