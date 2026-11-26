@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
-"""首次全样本运行：malf 引擎 + 分位。读 data/raw/bars.csv，写 data/processed/first_run/。
+"""全样本运行：malf 引擎 + 分位。读 data/raw/bars.csv（或 argv[1]），写 data/processed/first_run/（或 argv[2]）。
 
-用法：python -m malf
-核对：小波段事件与 lab/p20_real_c.py 的 events.json 一致；大波段与 nested.json 写法 C 一致。
+用法：python -m malf [bars_csv] [out_dir]
+核对：小波段事件与 lab/p20_real_c.py 的 events.json 一致；大波段与 nested.json 写法 C 一致
+      （只对参考文件里有的标的核对，全市场跑时其余标的跳过核对）。
 分位口径：扩展窗历史池（P10 时点纪律，无未来函数，malf/percentile.py）；
         同时保留全历史池（in-sample）分位作分布形态对照。
+数据：bars_all.csv = 全 A 股（5581 只，2020-2024），后复权未舍入（hithink 导出，见 README 数据来历）。
+      【取舍｜待确认】不含已退市股（库无数据，P4 含退市暂无法满足）；
+      与旧 bars.csv 同复权链，核对按事件结构（kind/i/dir/n）比，价格比值受精度影响不比。
 """
 import csv, collections, json, os, sys
 
@@ -15,11 +19,12 @@ sys.path.insert(0, ROOT)
 from malf.core import small_run, small_waves, big_run
 from malf.percentile import pct, ExpandingPool
 
-OUT = os.path.join(ROOT, 'data', 'processed', 'first_run')
+BARS = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, 'data', 'raw', 'bars.csv')
+OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(ROOT, 'data', 'processed', 'first_run')
 os.makedirs(OUT, exist_ok=True)
 
 rows = collections.defaultdict(list)
-for x in csv.DictReader(open(os.path.join(ROOT, 'data', 'raw', 'bars.csv'), encoding='utf-8')):
+for x in csv.DictReader(open(BARS, encoding='utf-8')):
     rows[x['symbol']].append((x['date'], float(x['open']), float(x['high']), float(x['low']), float(x['close'])))
 for k in rows:
     rows[k].sort(key=lambda t: t[0])
@@ -58,18 +63,25 @@ for s in sorted(rows):
             snaps[i] = dict(dir=w['dir'], n=cnt, no_new_span=span, wave_age=i - w['b'])
     snaps_big[s] = snaps
 
-# ---- 核对 1：小波段事件 == p20_real_c events.json ----
+def sig(ev):
+    """事件结构签名：kind/i/dir/n（guard/level 等价格值受复权精度影响，不作核对依据）。"""
+    return [(e['kind'], e['i'], e['dir'], e.get('n')) for e in ev]
+
+
+# ---- 核对 1：小波段事件 == p20_real_c events.json（只对参考文件里有的标的） ----
 ref = json.load(open(os.path.join(ROOT, 'data', 'processed', 'p20_real_c', 'events.json'), encoding='utf-8'))
-mis = [s for s in res if res[s] != ref.get(s)]
-print('核对1 小波段事件 vs p20_real_c：%d 只标的不一致 %s' % (len(mis), mis[:5]))
+chk = [s for s in res if s in ref]
+mis = [s for s in chk if sig(res[s]) != sig(ref[s])]
+print('核对1 小波段事件(结构) vs p20_real_c：核对 %d 只，不一致 %d 只 %s' % (len(chk), len(mis), mis[:5]))
 
 # ---- 核对 2：大波段 == nested.json 写法 C ----
 refb = json.load(open(os.path.join(ROOT, 'data', 'processed', 'nested', 'nested.json'), encoding='utf-8'))['C']['big']
+chk2 = [s for s in bigs_all if s in refb]
 mis2 = sum(
-    ([(w['dir'], w['b'], w['d'], w['cnt'], w['nsw'], w['by_kill'], [[m['i'], m['g']] for m in w['moves']]) for w in bigs_all[s]]
-     != [(w['dir'], w['b'], w['d'], w['cnt'], w['nsw'], w['by_kill'], w.get('trace', [])) for w in refb.get(s, [])])
-    for s in bigs_all)
-print('核对2 大波段 vs nested.py C：%d 只标的不一致' % mis2)
+    ([(w['dir'], w['b'], w['d'], w['cnt'], w['nsw'], w['by_kill'], [m['i'] for m in w['moves']]) for w in bigs_all[s]]
+     != [(w['dir'], w['b'], w['d'], w['cnt'], w['nsw'], w['by_kill'], [t[0] for t in w.get('trace', [])]) for w in refb.get(s, [])])
+    for s in chk2)
+print('核对2 大波段(结构) vs nested.py C：核对 %d 只，不一致 %d 只' % (len(chk2), mis2))
 
 
 def add_meta(waves_by_sym, snaps_by_sym, alive_by_sym=None):
@@ -137,4 +149,4 @@ json.dump(dict(
     alive_small_n=len(alive_s),
     sample_small=sample_s, sample_big=sample_b),
     open(os.path.join(OUT, 'percentile_first.json'), 'w'), ensure_ascii=False)
-print('-> data/processed/first_run/percentile_first.json')
+print('->', os.path.join(OUT, 'percentile_first.json'))

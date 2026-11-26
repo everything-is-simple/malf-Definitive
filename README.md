@@ -21,7 +21,7 @@ flowchart LR
 | 目录 | 放什么 | 规矩 |
 |---|---|---|
 | `docs/` | 当前稿；`malf-definitive-figs/` 是进了文档的编号图；`pictures/` 是截图和书页；`archive/` 是 v1.0–v3.0 历史版本 | 只改当前稿。`archive/` 封存，只读 |
-| `data/raw/` | 原始行情，现在只有 `bars.csv` | 只进不改 |
+| `data/raw/` | 原始行情：`bars.csv`（314 只）、`bars_all.csv`（全 A 股）、`_a_share_10y_*.parquet`（全 A 股 10 年三种复权，hithink 导出底账） | 只进不改 |
 | `data/processed/` | 脚本产物，一次实跑一个文件夹 | 不手改，删了能重跑 |
 | `lab/` | 实验脚本；`figs/` 是看图用的未编号图；`legacy/` 是旧稿 | 一个脚本只做一件事，只用 Python 标准库 |
 | `malf/` | 权威实现（2026-11-26 定义层签完后建）：`core.py` 引擎、`percentile.py` 分位；`python -m malf` 全样本首跑并自核对 | 是 |
@@ -45,8 +45,15 @@ python lab/big_from_small.py # 大波段从小波段推（八步），前顶两�
 python lab/big_real.py       # 大波段（丙）首跑 -> data/processed/big/big_events.json
 python lab/quant_charts.py   # 按总只数分档挑例子画图 -> lab/figs/wave_q*.svg
 python lab/nested_chart.py A # 画一条上涨、一条下跌大波段 -> lab/figs/nested_up.svg、nested_dn.svg
+python lab/pct_chart.py 000001 a  # 单标的5年全景：K线+大波段时间带+新高第几只+守护台阶，下方逐bar扩展窗分位 -> lab/figs/pct_000001_a.svg
+python -m malf data/raw/bars_all.csv data/processed/full_run  # 全 A 股（5581 只）引擎 + 分位
 ```
 
 ## 数据来历
 
-`data/raw/bars.csv`：取自 `B:/arc-pinbar/data/db/arc-pinbar.db` 的 `bar` 表。314 只 A 股，2020-01-02 到 2024-12-31 日线，后复权价，去掉停牌根。导出语句没有留档。
+`data/raw/bars.csv`：取自 `B:/arc-pinbar/data/db/arc-pinbar.db` 的 `bar` 表。314 只 A 股，2020-01-02 到 2024-12-31 日线，后复权价（锚定 2020-01-02，已舍入），去掉停牌根。导出语句没有留档。
+
+`data/raw/_a_share_10y_{raw,qfq,hfq}.parquet`：hithink-finance CLI `db export` 自本地 DuckDB（`data sync` 全量同步，2026-11-26）。2016-11-28 到 2026-11-26 全部 A 股 5581 只日线，三种复权口径各一份。
+
+`data/raw/bars_all.csv`：由 `_a_share_10y_hfq.parquet` 导出，取 2020-01-01 到 2024-12-31，后复权未舍入，代码去 `.SZ` 后缀。全市场引擎跑这个：`python -m malf data/raw/bars_all.csv data/processed/full_run`。
+【取舍｜待确认】① 5581 只是现况上市，**不含已退市**（P4 含退市暂无法满足，hithink 库无退市数据）；② 与旧 `bars.csv` 是同一复权链（逐日比值恒定），仅精度与锚点不同——引擎事件结构 220 只参考标的中 217 只完全一致，3 只（000711、002555、300071）因供应商复权处理差异分叉，属数据差异非引擎 bug。
