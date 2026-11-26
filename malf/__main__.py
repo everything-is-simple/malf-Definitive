@@ -2,13 +2,18 @@
 """全样本运行：malf 引擎 + 分位。读 data/raw/bars.csv（或 argv[1]），写 data/processed/first_run/（或 argv[2]）。
 
 用法：python -m malf [bars_csv] [out_dir]
-核对：小波段事件与 lab/p20_real_c.py 的 events.json 一致；大波段与 nested.json 写法 C 一致
-      （只对参考文件里有的标的核对，全市场跑时其余标的跳过核对）。
-分位口径：扩展窗历史池（P10 时点纪律，无未来函数，malf/percentile.py）；
-        同时保留全历史池（in-sample）分位作分布形态对照。
+合同（2026-11-26 签署，P22–P25 对齐）：
+- 价格比较域：_px() = 后复权价 ×100 四舍五入 half-up 取整（hfq_x100_halfup_v1）。
+- 出生：全历史起点统一盘整出生（D18/O6 已冻结，P22）；同一根 bar 机械按 O2 顺序，
+  新守护点当根判死时已生效（P23）。
+- 分位：严格小于、终止不晚于当前 bar（含当日）、池不足 30 条返回 None、
+  停滞样本 = final_span 临终冻结值（P24/P25，malf/percentile.py）；
+  同时保留全历史池（in-sample）分位作分布形态对照。
+核对：小波段事件与 lab/p20_real_c.py 的 events.json 比结构；大波段与 nested.json 写法 C 比结构
+      （只对参考文件里有的标的核对）。注意：参考文件出自未量化的 float 比较，_px 取整后
+      临界相等的边界情形可能产生少量结构分歧，属预期。
 数据：bars_all.csv = 全 A 股（5581 只，2020-2024），后复权未舍入（hithink 导出，见 README 数据来历）。
-      【取舍｜待确认】不含已退市股（库无数据，P4 含退市暂无法满足）；
-      与旧 bars.csv 同复权链，核对按事件结构（kind/i/dir/n）比，价格比值受精度影响不比。
+      【取舍｜已签】不含已退市股；与旧 bars.csv 同复权链。
 """
 import csv, collections, json, os, sys
 
@@ -16,7 +21,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-from malf.core import small_run, small_waves, big_run
+from malf.core import small_run, small_waves, big_run, _px
 from malf.percentile import pct, ExpandingPool
 
 BARS = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, 'data', 'raw', 'bars.csv')
@@ -33,8 +38,8 @@ res, bigs_all, snaps_small, snaps_big = {}, {}, {}, {}
 alive_big = {}
 for s in sorted(rows):
     bars = rows[s]
-    H = [b[2] for b in bars]
-    L = [b[3] for b in bars]
+    H = [_px(b[2]) for b in bars]
+    L = [_px(b[3]) for b in bars]
     ev, snaps = small_run(bars)
     res[s] = ev
     snaps_small[s] = snaps
@@ -85,7 +90,8 @@ print('核对2 大波段(结构) vs nested.py C：核对 %d 只，不一致 %d �
 
 
 def add_meta(waves_by_sym, snaps_by_sym, alive_by_sym=None):
-    """给每条波段补 max_span、死亡/出生日期；返回全市场拍平列表（含活到数据末的）。waves 就地改。"""
+    """给每条波段补 final_span（P24：临终冻结的未推进时长，不是全程最大）、死亡/出生日期；
+    返回全市场拍平列表（含活到数据末的）。waves 就地改。"""
     flat = []
     items = [(s, waves_by_sym[s]) for s in waves_by_sym]
     if alive_by_sym:
@@ -93,10 +99,15 @@ def add_meta(waves_by_sym, snaps_by_sym, alive_by_sym=None):
     for s, ws in items:
         last = len(rows[s]) - 1
         for w in ws:
-            end = w['d'] if w.get('d') is not None else last
-            w['max_span'] = max((snaps_by_sym[s][i]['no_new_span'] for i in range(w['b'], end + 1)
-                                 if snaps_by_sym[s][i]), default=0)
-            w['dd'] = rows[s][w['d']][0] if w.get('d') is not None else None
+            if w.get('d') is not None:
+                # 死亡那根收盘时的未推进时长 = 前一根快照 + 1（引擎在死亡那根先累加再判死）；
+                # 出生即死的边界（仅大波段可能）记 1
+                prev = snaps_by_sym[s][w['d'] - 1] if w['d'] - 1 >= w['b'] else None
+                w['final_span'] = prev['no_new_span'] + 1 if prev is not None else 1
+                w['dd'] = rows[s][w['d']][0]
+            else:
+                w['final_span'] = snaps_by_sym[s][last]['no_new_span']
+                w['dd'] = None
             w['bd'] = rows[s][w['b']][0]
             w['sym'] = s
             flat.append(w)
@@ -108,14 +119,14 @@ def level(name, flat, snaps_by_sym, count_key):
     dead = [w for w in flat if w.get('d') is not None]
     alive = [w for w in flat if w.get('d') is None]
     fn = {d: sorted(w[count_key] for w in dead if w['dir'] == d) for d in ('UP', 'DN')}
-    fs = {d: sorted(w['max_span'] for w in dead if w['dir'] == d) for d in ('UP', 'DN')}
+    fs = {d: sorted(w['final_span'] for w in dead if w['dir'] == d) for d in ('UP', 'DN')}
     print('== %s：已死 %d 条（活到数据末 %d 条）' % (name, len(dead), len(alive)))
     for d in ('UP', 'DN'):
         v = fn[d]
         print('  %s 最终只数 中位 %s P90 %s 最大 %s；池 %d 条' % (d, v[len(v)//2], v[int(.9*len(v))], v[-1], len(v)))
     for d in ('UP', 'DN'):
         v = fs[d]
-        print('  %s 最大未推进 中位 %s P90 %s 最大 %s' % (d, v[len(v)//2], v[int(.9*len(v))], v[-1]))
+        print('  %s 临终未推进 中位 %s P90 %s 最大 %s' % (d, v[len(v)//2], v[int(.9*len(v))], v[-1]))
     pool = ExpandingPool(dead, count_key)
     sample = []
     for s in sorted(rows):
@@ -141,11 +152,11 @@ dead_b, alive_b, sample_b = level('大波段', flat_b, snaps_big, 'cnt')
 
 json.dump(dict(
     small=[dict(sym=w['sym'], dir=w['dir'], b=w['b'], d=w['d'], bd=w['bd'], dd=w['dd'],
-                n=w['n'], max_span=w['max_span']) for w in flat_s],
+                n=w['n'], final_span=w['final_span']) for w in flat_s],
     big=[dict(sym=w['sym'], dir=w['dir'], b=w['b'], d=w['d'], bd=w['bd'], dd=w['dd'],
-              cnt=w['cnt'], nsw=w['nsw'], max_span=w['max_span']) for w in dead_b],
+              cnt=w['cnt'], nsw=w['nsw'], final_span=w['final_span']) for w in dead_b],
     alive_big=[dict(sym=w['sym'], dir=w['dir'], b=w['b'], bd=w['bd'], cnt=w['cnt'],
-                    nsw=w['nsw'], max_span=w['max_span']) for w in alive_b],
+                    nsw=w['nsw'], final_span=w['final_span']) for w in alive_b],
     alive_small_n=len(alive_s),
     sample_small=sample_s, sample_big=sample_b),
     open(os.path.join(OUT, 'percentile_first.json'), 'w'), ensure_ascii=False)

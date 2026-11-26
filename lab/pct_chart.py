@@ -9,7 +9,7 @@ import csv, json, os, sys, collections
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 sys.stdout.reconfigure(encoding='utf-8')
-from malf.core import small_run, small_waves, big_run
+from malf.core import small_run, small_waves, big_run, _px
 from malf.percentile import pct, ExpandingPool
 
 sym = sys.argv[1]
@@ -21,9 +21,9 @@ os.makedirs(OUT, exist_ok=True)
 bars = [x for x in csv.DictReader(open(os.path.join(BASE, 'bars.csv'), encoding='utf-8')) if x['symbol'] == sym]
 bars.sort(key=lambda r: r['date'])
 n = len(bars)
-H = [float(r['high']) for r in bars]
-L = [float(r['low']) for r in bars]
-ev, snaps = small_run([(r['date'], float(r['open']), H[i], L[i], float(r['close'])) for i, r in enumerate(bars)])
+H = [_px(float(r['high'])) for r in bars]   # P25：与引擎同一比较域
+L = [_px(float(r['low'])) for r in bars]
+ev, snaps = small_run([(r['date'], float(r['open']), float(r['high']), float(r['low']), float(r['close'])) for r in bars])
 SW = small_waves(ev)
 bigs, alive = big_run(H, L, SW)
 if alive is not None:

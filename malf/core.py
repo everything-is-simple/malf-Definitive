@@ -12,10 +12,19 @@ snaps：逐 bar 快照 dict(dir, n, no_new_span, wave_age, hl_count)；无活波
 """
 
 
+def _px(x):
+    """P2/P25 价格比较域（price_compare_policy = hfq_x100_halfup_v1）：
+    后复权价 × 100，四舍五入（half-up，非银行家舍入）取整。
+    用 str(x) 中转，避免二进制浮点把恰好的 .5 落成 .4999…。"""
+    from decimal import Decimal, ROUND_HALF_UP
+    return int((Decimal(str(x)) * 100).quantize(Decimal('1'), rounding=ROUND_HALF_UP))
+
+
 def small_run(bars):
+    """bars: (date, open, high, low, close)。high/low 先经 _px 量化（P25）再比较。"""
     n = len(bars)
-    H = [b[2] for b in bars]
-    L = [b[3] for b in bars]
+    H = [_px(b[2]) for b in bars]
+    L = [_px(b[3]) for b in bars]
     ev = []
     snaps = [None] * n
     state = None                    # dict(dir, n, guard, ext, birth, last_frac, hl)

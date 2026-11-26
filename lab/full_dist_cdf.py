@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """编号图：314 只 与 全市场（5581 只）的分位池分布对比（CDF）。
 数据：data/processed/first_run/percentile_first.json（314 只）对 full_run/（全市场）。
-输出：docs/malf-definitive-figs/fig-17-fullmarket-cdf.svg（图 20）
+输出：docs/malf-definitive-figs/fig-13-fullmarket-cdf.svg（图 13）
 口径：已死波段按方向分池；横轴截尾，纵轴 = 样本中 ≤x 的比例。
 """
 import json, os, sys
@@ -35,9 +35,9 @@ def series(run, level, key):
 
 PANELS = [
     ('小波段 · 最终只数', 'small', 30, 1),
-    ('小波段 · 最大未推进（根）', 'small_span', 40, 1),
+    ('小波段 · 临终未推进（根）', 'small_span', 40, 1),
     ('大波段 · 最终只数', 'big', 40, 1),
-    ('大波段 · 最大未推进（根）', 'big_span', 150, 5),
+    ('大波段 · 临终未推进（根）', 'big_span', 150, 5),
 ]
 
 W, Hh = 680, 528
@@ -72,7 +72,7 @@ def panel(px, py, title, curves, cap):
 
 o = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" role="img" font-family="var(--font-sans)" width="100%%">' % (W, Hh)]
 o.append('<title>314 只与全市场的分位池分布对比</title>'
-         '<desc>四个面板各是已死波段池的累积分布：小波段最终只数、小波段最大未推进、大波段最终只数、大波段最大未推进。'
+         '<desc>四个面板各是已死波段池的累积分布：小波段最终只数、小波段临终未推进、大波段最终只数、大波段临终未推进。'
          '红线上涨池、绿线下跌池；实线全市场 5581 只，虚线 314 只。两组曲线几乎重合。横轴截尾。</desc>')
 
 for idx, (title, level, cap, step) in enumerate(PANELS):
@@ -84,7 +84,7 @@ for idx, (title, level, cap, step) in enumerate(PANELS):
         src = run[base]
         if base == 'small':
             src = [w for w in src if w['d'] is not None]
-        k = 'max_span' if span else ('n' if base == 'small' else 'cnt')
+        k = 'final_span' if span else ('n' if base == 'small' else 'cnt')
         return sorted(w[k] for w in src if w['dir'] == d)
 
     curves = []
@@ -108,6 +108,6 @@ o.append('<text x="%d" y="%d" font-size="10" fill="#333">虚线 314 只样本（
 o.append('<text x="%d" y="%d" font-size="10" fill="#999">2020-01-02 到 2024-12-31，日线，后复权。横轴截尾；纵轴 = 池内 ≤x 的比例。</text>' % (40, Hh - 8))
 
 o.append('</svg>')
-out = os.path.join(ROOT, 'docs', 'malf-definitive-figs', 'fig-17-fullmarket-cdf.svg')
+out = os.path.join(ROOT, 'docs', 'malf-definitive-figs', 'fig-13-fullmarket-cdf.svg')
 open(out, 'w', encoding='utf-8').write('\n'.join(o))
 print('->', out)
