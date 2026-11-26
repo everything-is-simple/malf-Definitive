@@ -36,7 +36,9 @@ flowchart LR
 ## 跑实验
 
 ```bash
-python lab/p20_real.py       # 小波段：bars.csv -> data/processed/p20_real/events.json
+python lab/p20_real_c.py     # 小波段（已裁决：守护点随最新确认的 HL 上移），打印文档 4.6.7 的表 -> data/processed/p20_real_c/events.json
+python lab/p20_real_chart.py 002899 2020-03-16 2020-08-24 a   # 画一段真实日线：盘整区、新高第几只、守护点台阶 -> lab/figs/p20c_a.svg
+python lab/p20_real.py       # 对照：小波段守护点出生后不动 -> data/processed/p20_real/events.json
 python lab/nested.py         # 大小波段嵌套，三种写法 A / B / C -> data/processed/nested/nested.json
 python lab/big_from_small.py # 大波段从小波段推（八步），前顶两种读法对比 -> data/processed/big8/big8.json、lab/figs/big8_up.svg、big8_dn.svg
 python lab/big_real.py       # 大波段（丙）首跑 -> data/processed/big/big_events.json
