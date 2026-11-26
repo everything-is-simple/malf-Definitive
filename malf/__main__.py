@@ -152,6 +152,11 @@ flat_b = add_meta(bigs_all, snaps_big, alive_big)
 dead_s, alive_s, sample_s = level('小波段', flat_s, snaps_small, 'n')
 dead_b, alive_b, sample_b = level('大波段', flat_b, snaps_big, 'cnt')
 
+# P26：ambiguous_intraday_event 统计（同根推进+击穿的死亡事件，日线还原不了盘中先后）
+amb_s = [e for s in res for e in res[s] if e['kind'] == 'dead' and e.get('ambig')]
+amb_b = sum(1 for s in bigs_all for w in bigs_all[s] if w['d'] in w['newbars'])  # 活波段无死亡，天然不计
+print('== P26 ambiguous_intraday_event：小波段 %d 条 / 大波段 %d 条' % (len(amb_s), amb_b))
+
 json.dump(dict(
     small=[dict(sym=w['sym'], dir=w['dir'], b=w['b'], d=w['d'], bd=w['bd'], dd=w['dd'],
                 n=w['n'], final_span=w['final_span']) for w in flat_s],
@@ -160,6 +165,9 @@ json.dump(dict(
     alive_big=[dict(sym=w['sym'], dir=w['dir'], b=w['b'], bd=w['bd'], cnt=w['cnt'],
                     nsw=w['nsw'], final_span=w['final_span']) for w in alive_b],
     alive_small_n=len(alive_s),
+    ambig_small=[dict(sym=s2, **{k: e[k] for k in ('i', 'dir', 'n', 'final_span')})
+                 for s2 in res for e in res[s2] if e['kind'] == 'dead' and e.get('ambig')],
+    ambig_big_n=amb_b,
     sample_small=sample_s, sample_big=sample_b),
     open(os.path.join(OUT, 'percentile_first.json'), 'w'), ensure_ascii=False)
 print('->', os.path.join(OUT, 'percentile_first.json'))

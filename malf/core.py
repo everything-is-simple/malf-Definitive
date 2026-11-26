@@ -91,7 +91,8 @@ def small_run(bars):
                             wave_age=i - state['birth'] - int(dead), hl_count=state['hl'])
             if dead:
                 ev.append(dict(kind='dead', i=i, dir=state['dir'], n=state['n'], guard=state['guard'],
-                               final_span=span, wave_age=snaps[i]['wave_age']))
+                               final_span=span, wave_age=snaps[i]['wave_age'],
+                               ambig=bool(advanced)))   # P26：同根推进+击穿 = ambiguous_intraday_event
                 snaps[i] = None         # 死亡那根起归过渡区
                 last_dir, last_ext = state['dir'], state['ext']
                 state = None

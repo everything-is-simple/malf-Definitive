@@ -73,6 +73,29 @@ class TestSameBarP23(unittest.TestCase):
         self.assertEqual(dead[0]['guard'], 1050)   # 新守护，不是出生守护 900
 
 
+class TestAmbigP26(unittest.TestCase):
+    """P26：同根推进+击穿 → dead 事件 ambig=True（ambiguous_intraday_event，纯审计不改判定）。"""
+
+    def test_new_and_dead_same_bar(self):
+        # born i=2 guard=900；i=3 最高 13 刷新极值（推进）且最低 8.5 跌破 900（击穿）→ 同根双事件
+        H = [12, 11, 12.5, 13]
+        L = [ 9, 9.2, 9.0, 8.5]
+        ev, _ = small_run([('d%d' % i, 0, H[i], L[i], 0) for i in range(4)])
+        dead = [e for e in ev if e['kind'] == 'dead']
+        self.assertEqual(len(dead), 1)
+        self.assertTrue(dead[0]['ambig'])
+        self.assertEqual(dead[0]['n'], 2)          # 推进已记，再判死
+        self.assertEqual(dead[0]['final_span'], 0)  # 推进那根归零，冻结
+
+    def test_plain_death_not_ambig(self):
+        bars = [('d%d' % i, 0, h, l, 0) for i, (h, l) in
+                enumerate([(12, 9), (11, 9.2), (12.5, 9.0), (12.4, 8.5)])]
+        ev, _ = small_run(bars)
+        dead = [e for e in ev if e['kind'] == 'dead']
+        self.assertEqual(len(dead), 1)
+        self.assertFalse(dead[0]['ambig'])
+
+
 class TestFreezeL6(unittest.TestCase):
     """L6/L-T4：死亡那根不再加一，final_span = 前一根的 no_new_span。"""
 
