@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="360" viewBox="0 0 880 360" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, sans-serif">
+<rect x="0" y="0" width="880" height="360" rx="0" fill="#ffffff" stroke="none" stroke-width="1"/>
+<rect x="0" y="0" width="880" height="360" rx="10" fill="none" stroke="#d9dee5" stroke-width="1"/>
+<text x="28" y="40" font-size="18" fill="#1f2933" text-anchor="start" font-weight="bold">图 历史分位怎么读</text>
+<text x="28" y="64" font-size="13" fill="#6b7280" text-anchor="start" font-weight="normal">示意数据，不是真实行情。横轴：每条同类已终止波段，一辈子新高了多少只。一个点是一条波段。</text>
+<rect x="76" y="120" width="437.0" height="140" rx="6" fill="#eef2ff" stroke="none" stroke-width="1"/>
+<circle cx="142" cy="205" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="142" cy="188" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="204" cy="205" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="204" cy="188" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="204" cy="171" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="266" cy="205" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="266" cy="188" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="266" cy="171" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="266" cy="154" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="266" cy="137" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="328" cy="205" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="328" cy="188" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="328" cy="171" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="328" cy="154" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="328" cy="137" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="390" cy="205" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="390" cy="188" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="390" cy="171" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="390" cy="154" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="452" cy="205" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="452" cy="188" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="452" cy="171" r="6" fill="#1d4ed8" stroke="none" stroke-width="1.5"/>
+<circle cx="514" cy="205" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="514" cy="188" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="514" cy="171" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="514" cy="154" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="514" cy="137" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="576" cy="205" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="576" cy="188" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="576" cy="171" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="576" cy="154" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="576" cy="137" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="638" cy="205" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="638" cy="188" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="638" cy="171" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="638" cy="154" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="700" cy="205" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="700" cy="188" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="700" cy="171" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<circle cx="762" cy="205" r="6" fill="#6b7280" stroke="none" stroke-width="1.5"/>
+<line x1="76" y1="229" x2="834" y2="229" stroke="#1f2933" stroke-width="1.2"/>
+<text x="142" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">1</text>
+<text x="204" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">2</text>
+<text x="266" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">3</text>
+<text x="328" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">4</text>
+<text x="390" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">5</text>
+<text x="452" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">6</text>
+<text x="514" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">7</text>
+<text x="576" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">8</text>
+<text x="638" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">9</text>
+<text x="700" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">10</text>
+<text x="762" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">11</text>
+<text x="824" y="249" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">12</text>
+<line x1="514" y1="112" x2="514" y2="229" stroke="#c0392b" stroke-width="2.5"/>
+<text x="524" y="108" font-size="13" fill="#c0392b" text-anchor="start" font-weight="bold">当前活波段：到现在新高第 7 只</text>
+<text x="483.0" y="292" font-size="13" fill="#1d4ed8" text-anchor="middle" font-weight="bold">比它少：22 条</text>
+<text x="669.0" y="292" font-size="13" fill="#6b7280" text-anchor="middle" font-weight="bold">不比它少：18 条</text>
+<text x="28" y="336" font-size="13" fill="#1f2933" text-anchor="start" font-weight="normal">推进分位 = 22 ÷ 40 = 0.55。读作：这条波段到现在新高的只数，已经超过池里 55% 的同类波段一辈子新高的只数。</text>
+</svg>

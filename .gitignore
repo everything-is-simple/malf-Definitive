@@ -1,0 +1,10 @@
+# WorkBuddy 本地状态（会话记录），不入库
+.workbuddy/
+
+# Python
+__pycache__/
+
+# 数据与截图留在本机：远端仓库可匿名读取。
+# 仓库改为私有时，删掉下面两行即可入库。
+data/
+docs/pictures/

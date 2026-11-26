@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="430" viewBox="0 0 860 430" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, sans-serif">
+<rect x="0" y="0" width="860" height="430" rx="0" fill="#ffffff" stroke="none" stroke-width="1"/>
+<rect x="0" y="0" width="860" height="430" rx="10" fill="none" stroke="#d9dee5" stroke-width="1"/>
+<text x="28" y="40" font-size="18" fill="#1f2933" text-anchor="start" font-weight="bold">图 上涨波段与下跌波段：推进与守护</text>
+<text x="28" y="64" font-size="13" fill="#6b7280" text-anchor="start" font-weight="normal">红 = 推进（新高 / 新低），蓝线 = 当前守护点，灰点线 = 已被替换的旧守护点。示意图，非真实行情。</text>
+<text x="80" y="105" font-size="14" fill="#1f2933" text-anchor="start" font-weight="bold">上涨波段：HH 推进，HL 守护</text>
+<line x1="76" y1="318.0" x2="456" y2="318.0" stroke="#6b7280" stroke-width="1" stroke-dasharray="2 4"/>
+<line x1="76" y1="287.20000000000005" x2="456" y2="287.20000000000005" stroke="#6b7280" stroke-width="1" stroke-dasharray="2 4"/>
+<line x1="76" y1="265.20000000000005" x2="456" y2="265.20000000000005" stroke="#1d4ed8" stroke-width="2" stroke-dasharray="7 4"/>
+<line x1="110" y1="252.0" x2="110" y2="287.20000000000005" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="102.5" y="265.20000000000005" width="15" height="13.200000000000045" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="134" y1="265.20000000000005" x2="134" y2="318.0" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="126.5" y="269.6" width="15" height="35.200000000000045" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="158" y1="287.20000000000005" x2="158" y2="309.20000000000005" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="150.5" y="291.6" width="15" height="8.800000000000068" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="182" y1="265.20000000000005" x2="182" y2="296.0" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="174.5" y="269.6" width="15" height="22.0" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="206" y1="221.20000000000005" x2="206" y2="274.0" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="198.5" y="234.40000000000006" width="15" height="30.799999999999983" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="230" y1="234.40000000000006" x2="230" y2="260.80000000000007" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="222.5" y="238.80000000000004" width="15" height="13.19999999999996" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="254" y1="247.60000000000002" x2="254" y2="287.20000000000005" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="246.5" y="252.0" width="15" height="22.0" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="278" y1="252.0" x2="278" y2="278.4000000000001" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="270.5" y="256.4000000000001" width="15" height="13.199999999999932" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="302" y1="199.20000000000002" x2="302" y2="256.4000000000001" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="294.5" y="208.0" width="15" height="44.0" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="326" y1="208.0" x2="326" y2="243.20000000000005" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="318.5" y="212.40000000000006" width="15" height="22.0" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="350" y1="230.0" x2="350" y2="265.20000000000005" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="342.5" y="238.80000000000004" width="15" height="8.799999999999983" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="374" y1="203.60000000000002" x2="374" y2="247.60000000000002" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="366.5" y="212.40000000000006" width="15" height="30.799999999999983" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="398" y1="172.80000000000004" x2="398" y2="212.40000000000006" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="390.5" y="181.6" width="15" height="26.400000000000006" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="422" y1="155.20000000000005" x2="422" y2="190.40000000000006" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="414.5" y="177.20000000000002" width="15" height="8.799999999999983" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<text x="110" y="244.0" font-size="12" fill="#c0392b" text-anchor="middle" font-weight="bold">H0</text>
+<text x="206" y="213.20000000000005" font-size="12" fill="#c0392b" text-anchor="middle" font-weight="bold">H2</text>
+<text x="302" y="191.20000000000002" font-size="12" fill="#c0392b" text-anchor="middle" font-weight="bold">HH</text>
+<text x="422" y="147.20000000000005" font-size="12" fill="#c0392b" text-anchor="middle" font-weight="bold">HH</text>
+<text x="134" y="335.0" font-size="12" fill="#1d4ed8" text-anchor="middle" font-weight="bold">L1</text>
+<text x="254" y="304.20000000000005" font-size="12" fill="#1d4ed8" text-anchor="middle" font-weight="bold">HL</text>
+<text x="350" y="282.20000000000005" font-size="12" fill="#1d4ed8" text-anchor="middle" font-weight="bold">HL</text>
+<text x="80" y="385" font-size="13" fill="#1f2933" text-anchor="start" font-weight="normal">推进只更新高点，不换守护点。</text>
+<text x="80" y="407" font-size="13" fill="#1f2933" text-anchor="start" font-weight="normal">新的 HL 被确认，守护点才上移。</text>
+<text x="500" y="105" font-size="14" fill="#1f2933" text-anchor="start" font-weight="bold">下跌波段：LL 推进，LH 守护</text>
+<line x1="496" y1="143.5714285714285" x2="876" y2="143.5714285714285" stroke="#6b7280" stroke-width="1" stroke-dasharray="2 4"/>
+<line x1="496" y1="167.1428571428571" x2="876" y2="167.1428571428571" stroke="#6b7280" stroke-width="1" stroke-dasharray="2 4"/>
+<line x1="496" y1="206.42857142857142" x2="876" y2="206.42857142857142" stroke="#1d4ed8" stroke-width="2" stroke-dasharray="7 4"/>
+<line x1="530" y1="159.2857142857143" x2="530" y2="206.42857142857142" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="522.5" y="174.99999999999994" width="15" height="15.714285714285808" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="554" y1="143.5714285714285" x2="554" y2="186.78571428571428" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="546.5" y="155.3571428571428" width="15" height="27.49999999999997" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="578" y1="147.49999999999997" x2="578" y2="178.92857142857144" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="570.5" y="159.2857142857143" width="15" height="11.785714285714306" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="602" y1="182.85714285714278" x2="602" y2="222.14285714285705" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="594.5" y="167.1428571428571" width="15" height="43.21428571428578" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="626" y1="190.71428571428575" x2="626" y2="218.21428571428572" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="618.5" y="206.42857142857142" width="15" height="7.857142857142833" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="650" y1="167.1428571428571" x2="650" y2="210.3571428571429" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="642.5" y="182.85714285714278" width="15" height="23.57142857142864" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="674" y1="171.0714285714286" x2="674" y2="202.49999999999991" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="666.5" y="186.78571428571428" width="15" height="7.857142857142833" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="698" y1="253.57142857142853" x2="698" y2="261.42857142857133" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="690.5" y="190.71428571428575" width="15" height="58.928571428571416" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="722" y1="222.14285714285705" x2="722" y2="253.57142857142853" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="714.5" y="237.85714285714286" width="15" height="11.785714285714306" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="746" y1="206.42857142857142" x2="746" y2="241.78571428571422" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="738.5" y="230.00000000000006" width="15" height="7.857142857142804" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="770" y1="226.07142857142856" x2="770" y2="292.85714285714283" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="762.5" y="230.00000000000006" width="15" height="54.99999999999994" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="794" y1="249.64285714285717" x2="794" y2="285.0" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="786.5" y="261.42857142857133" width="15" height="19.642857142857167" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="818" y1="253.57142857142853" x2="818" y2="312.49999999999994" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="810.5" y="257.5" width="15" height="47.14285714285711" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="842" y1="277.14285714285717" x2="842" y2="316.42857142857144" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="834.5" y="285.0" width="15" height="15.714285714285666" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<text x="554" y="135.5714285714285" font-size="12" fill="#1d4ed8" text-anchor="middle" font-weight="bold">H1</text>
+<text x="650" y="159.1428571428571" font-size="12" fill="#1d4ed8" text-anchor="middle" font-weight="bold">LH</text>
+<text x="746" y="198.42857142857142" font-size="12" fill="#1d4ed8" text-anchor="middle" font-weight="bold">LH</text>
+<text x="530" y="223.42857142857142" font-size="12" fill="#1e8449" text-anchor="middle" font-weight="bold">L0</text>
+<text x="602" y="239.14285714285705" font-size="12" fill="#1e8449" text-anchor="middle" font-weight="bold">L2</text>
+<text x="698" y="278.42857142857133" font-size="12" fill="#1e8449" text-anchor="middle" font-weight="bold">LL</text>
+<text x="770" y="309.85714285714283" font-size="12" fill="#1e8449" text-anchor="middle" font-weight="bold">LL</text>
+<text x="500" y="385" font-size="13" fill="#1f2933" text-anchor="start" font-weight="normal">推进只更新低点，不换守护点。</text>
+<text x="500" y="407" font-size="13" fill="#1f2933" text-anchor="start" font-weight="normal">新的 LH 被确认，守护点才下移。</text>
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430" viewBox="0 0 1000 430" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, sans-serif">
+<rect x="0" y="0" width="1000" height="430" rx="0" fill="#ffffff" stroke="none" stroke-width="1"/>
+<rect x="0" y="0" width="1000" height="430" rx="10" fill="none" stroke="#d9dee5" stroke-width="1"/>
+<text x="28" y="40" font-size="18" fill="#1f2933" text-anchor="start" font-weight="bold">图 击穿与过渡区</text>
+<text x="28" y="64" font-size="13" fill="#6b7280" text-anchor="start" font-weight="normal">上涨波段的守护点 HL 被击穿：旧波段立即终止，进入过渡区。示意图，非真实行情。</text>
+<rect x="250" y="158.66666666666663" width="472" height="122.22222222222223" rx="4" fill="#eef2ff" stroke="none" stroke-width="1"/>
+<rect x="232" y="95" width="36" height="232" rx="4" fill="#fdecea" stroke="none" stroke-width="1"/>
+<line x1="20" y1="280.88888888888886" x2="232" y2="280.88888888888886" stroke="#1d4ed8" stroke-width="2" stroke-dasharray="7 4"/>
+<line x1="70" y1="241.77777777777771" x2="70" y2="280.88888888888886" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="62.0" y="251.55555555555554" width="16" height="9.777777777777715" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="106" y1="212.4444444444444" x2="106" y2="261.33333333333326" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="98.0" y="222.22222222222223" width="16" height="34.22222222222217" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="142" y1="178.2222222222222" x2="142" y2="222.22222222222223" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="134.0" y="187.99999999999994" width="16" height="29.333333333333314" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="178" y1="158.66666666666663" x2="178" y2="197.77777777777777" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="170.0" y="183.1111111111111" width="16" height="9.777777777777743" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="214" y1="187.99999999999994" x2="214" y2="227.1111111111111" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="206.0" y="192.88888888888883" width="16" height="24.44444444444443" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="250" y1="212.4444444444444" x2="250" y2="285.7777777777777" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="242.0" y="217.33333333333326" width="16" height="58.66666666666674" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="286" y1="246.66666666666669" x2="286" y2="295.55555555555554" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="278.0" y="256.4444444444444" width="16" height="14.666666666666686" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="322" y1="207.55555555555551" x2="322" y2="261.33333333333326" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="314.0" y="236.88888888888886" width="16" height="19.555555555555543" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="358" y1="231.99999999999997" x2="358" y2="266.2222222222222" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="350.0" y="236.88888888888886" width="16" height="9.777777777777828" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="394" y1="241.77777777777771" x2="394" y2="276.0" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="386.0" y="246.66666666666669" width="16" height="19.555555555555486" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="430" y1="236.88888888888886" x2="430" y2="271.1111111111111" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="422.0" y="241.77777777777771" width="16" height="19.555555555555543" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="466" y1="207.55555555555551" x2="466" y2="246.66666666666669" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="458.0" y="217.33333333333326" width="16" height="24.444444444444457" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="502" y1="212.4444444444444" x2="502" y2="256.4444444444444" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="494.0" y="217.33333333333326" width="16" height="29.333333333333428" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="538" y1="227.1111111111111" x2="538" y2="261.33333333333326" stroke="#1e8449" stroke-width="1.4"/>
+<rect x="530.0" y="246.66666666666669" width="16" height="9.777777777777715" rx="1" fill="#1e8449" stroke="none" stroke-width="1"/>
+<line x1="574" y1="231.99999999999997" x2="574" y2="256.4444444444444" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="566.0" y="241.77777777777771" width="16" height="9.777777777777828" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="610" y1="222.22222222222223" x2="610" y2="251.55555555555554" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="602.0" y="231.99999999999997" width="16" height="4.888888888888886" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="646" y1="183.1111111111111" x2="646" y2="236.88888888888886" stroke="#c0392b" stroke-width="1.4"/>
+<rect x="638.0" y="192.88888888888883" width="16" height="34.22222222222226" rx="1" fill="#c0392b" stroke="none" stroke-width="1"/>
+<line x1="250" y1="158.66666666666663" x2="722" y2="158.66666666666663" stroke="#1d4ed8" stroke-width="2"/>
+<line x1="250" y1="280.88888888888886" x2="722" y2="280.88888888888886" stroke="#1d4ed8" stroke-width="2"/>
+<text x="178" y="150.66666666666663" font-size="12" fill="#c0392b" text-anchor="middle" font-weight="bold">旧波最终 HH</text>
+<text x="70" y="298.88888888888886" font-size="12" fill="#1d4ed8" text-anchor="middle" font-weight="bold">守护点 HL</text>
+<text x="734" y="163.66666666666663" font-size="12" fill="#1d4ed8" text-anchor="start" font-weight="bold">上边界 = 旧波最终 HH</text>
+<text x="734" y="215.77777777777774" font-size="15" fill="#1f2933" text-anchor="start" font-weight="bold">过渡区</text>
+<text x="734" y="234.77777777777774" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">旧波已死，新波未生</text>
+<text x="734" y="298.88888888888886" font-size="12" fill="#1d4ed8" text-anchor="start" font-weight="bold">下边界 = 被击穿的守护点</text>
+<path d="M250 287.7777777777777 q-10 22 -26 44" fill="none" stroke="#1f2933" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="210" y="352.88888888888886" font-size="13" fill="#c0392b" text-anchor="end" font-weight="bold">击穿：这根 K 线最低价低于守护点</text>
+<text x="210" y="372.88888888888886" font-size="12" fill="#6b7280" text-anchor="end" font-weight="normal">等于守护点不算击穿</text>
+<text x="28" y="405" font-size="13" fill="#6b7280" text-anchor="start" font-weight="normal">两条边界都不用击穿那根 K 线自己的高低点。过渡区里价格怎么走，都不会让旧波段复活。</text>
+</svg>
