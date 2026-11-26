@@ -38,6 +38,7 @@ flowchart LR
 ```bash
 python lab/p20_real.py       # 小波段：bars.csv -> data/processed/p20_real/events.json
 python lab/nested.py         # 大小波段嵌套，三种写法 A / B / C -> data/processed/nested/nested.json
+python lab/big_from_small.py # 大波段从小波段推（八步），前顶两种读法对比 -> data/processed/big8/big8.json、lab/figs/big8_up.svg、big8_dn.svg
 python lab/big_real.py       # 大波段（丙）首跑 -> data/processed/big/big_events.json
 python lab/quant_charts.py   # 按总只数分档挑例子画图 -> lab/figs/wave_q*.svg
 python lab/nested_chart.py A # 画一条上涨、一条下跌大波段 -> lab/figs/nested_up.svg、nested_dn.svg
