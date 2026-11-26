@@ -24,7 +24,8 @@ flowchart LR
 | `data/raw/` | 原始行情，现在只有 `bars.csv` | 只进不改 |
 | `data/processed/` | 脚本产物，一次实跑一个文件夹 | 不手改，删了能重跑 |
 | `lab/` | 实验脚本；`figs/` 是看图用的未编号图；`legacy/` 是旧稿 | 一个脚本只做一件事，只用 Python 标准库 |
-| `malf/`、`tests/` | 实现、测试 | 签署前不建 |
+| `malf/` | 权威实现（2026-11-26 定义层签完后建）：`core.py` 引擎、`percentile.py` 分位；`python -m malf` 全样本首跑并自核对 | 是 |
+| `tests/` | 测试 | 未建 |
 
 ## 规矩
 
