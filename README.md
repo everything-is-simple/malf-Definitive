@@ -47,11 +47,12 @@ python lab/quant_charts.py   # 按总只数分档挑例子画图 -> lab/figs/wav
 python lab/nested_chart.py A # 画一条上涨、一条下跌大波段 -> lab/figs/nested_up.svg、nested_dn.svg
 python lab/pct_chart.py 000001 a  # 单标的5年全景：K线+大波段时间带+新高第几只+守护台阶，下方逐bar扩展窗分位 -> lab/figs/pct_000001_a.svg
 python -m malf data/raw/bars_all.csv data/processed/full_run  # 全 A 股（5581 只）引擎 + 分位
+python -m unittest discover -s tests -v  # 签署后验收测试（引擎 golden + 分位契约，20 例）
 ```
 
 ## 数据来历
 
-`data/raw/bars.csv`：取自 `B:/arc-pinbar/data/db/arc-pinbar.db` 的 `bar` 表。314 只 A 股，2020-01-02 到 2024-12-31 日线，后复权价（锚定 2020-01-02，已舍入），去掉停牌根。导出语句没有留档。
+`data/raw/bars.csv`：取自 `B:/arc-pinbar/data/db/arc-pinbar.db` 的 `bar` 表。314 只 A 股，2020-01-02 到 2024-12-31 日线，后复权价（锚定 2020-01-02，**未舍入**，全行超 2 位小数），去掉停牌根。导出语句没有留档。
 
 `data/raw/_a_share_10y_{raw,qfq,hfq}.parquet`：hithink-finance CLI `db export` 自本地 DuckDB（`data sync` 全量同步，2026-11-26）。2016-11-28 到 2026-11-26 全部 A 股 5581 只日线，三种复权口径各一份。
 
