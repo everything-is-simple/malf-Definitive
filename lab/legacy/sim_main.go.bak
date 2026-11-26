@@ -1,0 +1,70 @@
+package main
+
+import (
+	"fmt"
+	"math"
+	"math/rand"
+	"arc-pinbar/internal/malf"
+	"arc-pinbar/internal/model"
+)
+
+func rw(seed int64, n int, drift, vol float64) []model.Bar {
+	r := rand.New(rand.NewSource(seed))
+	p := 10.0
+	bars := make([]model.Bar, n)
+	for i := 0; i < n; i++ {
+		c := p * math.Exp(drift + vol*r.NormFloat64())
+		hi := math.Max(p, c) * (1 + math.Abs(r.NormFloat64())*0.008)
+		lo := math.Min(p, c) * (1 - math.Abs(r.NormFloat64())*0.008)
+		bars[i] = model.Bar{TradeDate: fmt.Sprint(i), Open: p, High: hi, Low: lo, Close: c, AdjFactor: 1.0}
+		p = c
+	}
+	return bars
+}
+
+func pct(a, b int) float64 { return 100 * float64(a) / float64(b) }
+
+func main() {
+	n, seeds := 2500, 100
+	for _, cfg := range []struct{ name string; drift, vol float64 }{
+		{"零漂移随机游走", 0.0, 0.02}, {"上涨漂移(年化~8%)", 0.0003, 0.02}, {"下跌漂移", -0.0003, 0.02},
+	} {
+		sumAlive, sumBroken, sumFlip, sumBreaks, sumMaxSpan, sumUp := 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+		for s := 0; s < seeds; s++ {
+			c := malf.NewCore()
+			var prev malf.WavePosition
+			maxSpan, flips, breaks, alive, broken, up := 0, 0, 0, 0, 0, 0
+			for i, b := range rw(int64(s), n, cfg.drift, cfg.vol) {
+				wp := c.OnBar("x", b)
+				if wp.NoNewSpan > maxSpan { maxSpan = wp.NoNewSpan }
+				if i > 0 {
+					if wp.Direction != prev.Direction { flips++ }
+					if wp.LifeState == "broken" && prev.LifeState != "broken" { breaks++ }
+				}
+				if wp.LifeState == "alive" { alive++ }
+				if wp.LifeState == "broken" { broken++ }
+				if wp.Direction == "UP" { up++ }
+				prev = wp
+			}
+			sumAlive += float64(alive); sumBroken += float64(broken); sumFlip += float64(flips)
+			sumBreaks += float64(breaks); sumMaxSpan += float64(maxSpan); sumUp += float64(up)
+		}
+		f := float64(seeds)
+		fmt.Printf("%s | alive=%.0f%% broken=%.0f%% | 上升波占比=%.0f%% | 每千根bar: 破位%.1f次 方向翻转%.1f次 | 平均每段broken持续=%.0f根 | no_new_span最大值=%.1f\n",
+			cfg.name, pct(int(sumAlive/f+0.5), n), pct(int(sumBroken/f+0.5), n), pct(int(sumUp/f+0.5), n),
+			sumBreaks/f*1000/float64(n), sumFlip/f*1000/float64(n), sumBroken/math.Max(sumBreaks, 1), sumMaxSpan/f)
+	}
+
+	// 确定性上涨: 每天+1%, 每5天回调1根(低点低于前一根低点)
+	c := malf.NewCore(); p := 10.0; var firstBroken = -1; var e int
+	for i := 0; i < 500; i++ {
+		hi, lo := p*1.02, p*0.995
+		if i%5 == 4 { hi, lo = p*1.005, p*0.975 }
+		b := model.Bar{TradeDate: fmt.Sprint(i), Open: p, High: hi, Low: lo, Close: hi, AdjFactor: 1.0}
+		wp := c.OnBar("x", b)
+		if wp.LifeState == "broken" && firstBroken < 0 { firstBroken = i }
+		if i == 499 { e = wp.NewCount }
+		p = hi
+	}
+	fmt.Printf("确定性上涨500天(累计+%.0f倍, 仅每5天回调2.5%%) | 首次broken出现在第%d天 | 结束时 new_count=%d no_new_span=%d\n", math.Pow(1.02, 500), firstBroken, e, c.GetState("x").NoNewSpan)
+}
