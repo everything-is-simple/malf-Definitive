@@ -7,3 +7,4 @@ __pycache__/
 # 长期规矩：数据与截图只留本机，不进远端
 data/
 docs/pictures/
+_shot_*.png
