@@ -141,8 +141,13 @@ c = collections.Counter(min(b['nsw'], 4) for b in done)
 print('一条大波段里有几条同向小波段 1/2/3/4+:', [round(c.get(k, 0) / len(done), 3) for k in (1, 2, 3, 4)])
 print('由杀死前一条的反向小波段起算的', sum(b['by_kill'] for b in done), '占 %.1f%%' % (100 * sum(b['by_kill'] for b in done) / len(done)))
 print('守护点一步没抬过的', sum('steps' not in b for b in done), '占 %.1f%%' % (100 * sum('steps' not in b for b in done) / len(done)))
+big3 = [b['cnt'] for b in done if b['nsw'] >= 3]
 print('大波段和小波段完全重合（只有 1 条同向小波段）的平均只数', round(statistics.mean(b['cnt'] for b in done if b['nsw'] == 1), 2),
-      '3 条以上的平均只数', round(statistics.mean(b['cnt'] for b in done if b['nsw'] >= 3), 2), '中位', statistics.median(b['cnt'] for b in done if b['nsw'] >= 3))
+      '3 条以上的平均只数', round(statistics.mean(big3), 2) if big3 else '（没有）', '中位', statistics.median(big3) if big3 else '（没有）')
+sym_of = {}
+for s, d in allb.items():
+    for b in d['bigs']:
+        sym_of[id(b)] = s
 for b in done:
-    b['sym'] = next(s for s in v for v in [allb[s]['bigs']] if b in v)
+    b['sym'] = sym_of[id(b)]
 json.dump({s: dict(bigs=allb[s]['bigs'], sw=allb[s]['sw']) for s in allb}, open(os.path.join(BIG, 'big_events.json'), 'w'))

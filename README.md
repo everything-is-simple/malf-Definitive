@@ -31,13 +31,14 @@ flowchart LR
 1. 规则只认当前稿。条款标【继承】【裁决】【新增｜待确认】；证据标 E1 实测 / E2 原文 / E3 项目自述 / E4 推断。
 2. 实验只读 `data/raw`，只写 `data/processed` 和 `lab/figs`。要进文档的图才编号，放进 `docs/malf-definitive-figs/`。
 3. 结论写回当前稿的证据底账，带上脚本的路径。
-4. 数据、截图、`.workbuddy/` 留在本机，不入库（见 `.gitignore`）。
+4. 长期规矩：数据、截图、`.workbuddy/` 只留本机，不入库（见 `.gitignore`）。
 
 ## 跑实验
 
 ```bash
 python lab/p20_real.py       # 小波段：bars.csv -> data/processed/p20_real/events.json
 python lab/nested.py         # 大小波段嵌套，三种写法 A / B / C -> data/processed/nested/nested.json
+python lab/big_real.py       # 大波段（丙）首跑 -> data/processed/big/big_events.json
 python lab/quant_charts.py   # 按总只数分档挑例子画图 -> lab/figs/wave_q*.svg
 python lab/nested_chart.py A # 画一条上涨、一条下跌大波段 -> lab/figs/nested_up.svg、nested_dn.svg
 ```
