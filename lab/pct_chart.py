@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """单标的 5 年全景图（不编号）：K线 + 大波段时间带 + 小波段新高第几只 n + 守护点台阶 + 死亡叉，
-下方面板 = 逐 bar 扩展窗分位 pct_n_exp（P10，无未来函数）与 pct_span_exp。
+下方面板 = 逐 bar 扩展窗分位 pct_n_exp（P10，无未来函数）与 pct_span_exp（历史池使用临终冻结未推进值）。
 用法：python lab/pct_chart.py 000001 [tag]
 输出：lab/figs/pct_<sym>_<tag>.svg
 """
@@ -29,8 +29,8 @@ bigs, alive = big_run(H, L, SW)
 if alive is not None:
     bigs = bigs + [alive]
 
-# 全市场已死小波段池（扩展窗）：读 first_run 的 small 清单（含 dd 死亡日期）
-fr = json.load(open(os.path.join(ROOT, 'data', 'processed', 'first_run', 'percentile_first.json'), encoding='utf-8'))
+# Full-market dead small-wave pool (expanding window).
+fr = json.load(open(os.path.join(ROOT, 'data', 'processed', 'full_run', 'percentile_first.json'), encoding='utf-8'))
 pool = ExpandingPool(fr['small'])
 pct_n = [None] * n
 for i, r in enumerate(bars):
@@ -66,7 +66,7 @@ def Y(p):
 Y2T, Y2B = P1H + GAP + 8, Hh - 26    # 分位面板纵轴（0~1 倒置）
 
 o = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" role="img" font-family="var(--font-sans)" width="100%%">' % (W, Hh)]
-o.append('<title>%s 五年 HH(n) 与扩展窗分位</title><desc>上：K线，红绿底带是大波段（红涨绿跌），红号是新高第几只，灰虚线是守护点台阶，叉是击穿那根。下：逐bar扩展窗分位 pct_n（实线）与 pct_span（虚线），无未来函数。</desc>' % sym)
+o.append('<title>%s 五年 HH(n) 与扩展窗分位</title><desc>上：K线，红绿底带是大波段（红涨绿跌），红号是新高第几只，灰虚线是守护点台阶，叉是击穿那根。下：逐bar扩展窗分位 pct_n（实线）与 pct_span（虚线，历史样本为临终冻结未推进值），无未来函数。</desc>' % sym)
 
 # 大波段时间带
 for k, w in enumerate(bigs):
@@ -130,7 +130,7 @@ def path(get, dash=None):
 o.append(path(lambda t: t[0]))
 o.append(path(lambda t: t[1], dash=True))
 o.append('<text x="%.1f" y="%d" font-size="11" fill="#D40000">pct_n（当前只数在历史最终只数里的分位，扩展窗）</text>' % (X0, Y2T - 4))
-o.append('<text x="%.1f" y="%d" font-size="11" fill="#777">pct_span（虚线，当前未推进时长在最大未推进里的分位）</text>' % (X0 + 400, Y2T - 4))
+o.append('<text x="%.1f" y="%d" font-size="11" fill="#777">pct_span（虚线，当前未推进时长在历史临终未推进值里的分位）</text>' % (X0 + 400, Y2T - 4))
 
 # 年份刻度
 for i in range(0, n, 244):

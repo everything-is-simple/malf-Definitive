@@ -100,10 +100,11 @@ def add_meta(waves_by_sym, snaps_by_sym, alive_by_sym=None):
         last = len(rows[s]) - 1
         for w in ws:
             if w.get('d') is not None:
-                # 死亡那根收盘时的未推进时长 = 前一根快照 + 1（引擎在死亡那根先累加再判死）；
-                # 出生即死的边界（仅大波段可能）记 1
-                prev = snaps_by_sym[s][w['d'] - 1] if w['d'] - 1 >= w['b'] else None
-                w['final_span'] = prev['no_new_span'] + 1 if prev is not None else 1
+                if 'final_span' not in w:
+                    # 大波段：big_run 不带 final_span，从快照推同口径值
+                    # （L6/L-T4：击穿那根不再加一 → 冻结值 = 前一根快照的未推进时长）
+                    prev = snaps_by_sym[s][w['d'] - 1] if w['d'] - 1 >= w['b'] else None
+                    w['final_span'] = prev['no_new_span'] if prev is not None else 0
                 w['dd'] = rows[s][w['d']][0]
             else:
                 w['final_span'] = snaps_by_sym[s][last]['no_new_span']
@@ -129,17 +130,18 @@ def level(name, flat, snaps_by_sym, count_key):
         print('  %s 临终未推进 中位 %s P90 %s 最大 %s' % (d, v[len(v)//2], v[int(.9*len(v))], v[-1]))
     pool = ExpandingPool(dead, count_key)
     sample = []
-    for s in sorted(rows):
-        for i, sn in enumerate(snaps_by_sym[s]):
-            if sn is None or i % 60 != 0:
-                continue
-            pn, ps = pool.before(rows[s][i][0], sn['dir'])
-            sample.append(dict(sym=s, date=rows[s][i][0], dir=sn['dir'], n=sn['n'],
-                               no_new_span=sn['no_new_span'], wave_age=sn.get('wave_age'),
-                               pct_n=pct(fn[sn['dir']], sn['n']),
-                               pct_span=pct(fs[sn['dir']], sn['no_new_span']),
-                               pct_n_exp=pct(pn, sn['n']),
-                               pct_span_exp=pct(ps, sn['no_new_span'])))
+    # Sort all symbols together so the expanding pool never advances past a later query.
+    queries = [(rows[s][i][0], s, i, sn) for s in sorted(rows)
+               for i, sn in enumerate(snaps_by_sym[s]) if sn is not None and i % 60 == 0]
+    queries.sort(key=lambda q: (q[0], q[1], q[2]))
+    for date, s, i, sn in queries:
+        pn, ps = pool.before(date, sn['dir'])
+        sample.append(dict(sym=s, date=date, dir=sn['dir'], n=sn['n'],
+                           no_new_span=sn['no_new_span'], wave_age=sn.get('wave_age'),
+                           pct_n=pct(fn[sn['dir']], sn['n']),
+                           pct_span=pct(fs[sn['dir']], sn['no_new_span']),
+                           pct_n_exp=pct(pn, sn['n']),
+                           pct_span_exp=pct(ps, sn['no_new_span'])))
     return dead, alive, sample
 
 

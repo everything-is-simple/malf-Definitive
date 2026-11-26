@@ -73,11 +73,11 @@ def small_run(bars):
                 snaps[i] = dict(dir=state['dir'], n=1, no_new_span=0, wave_age=0, hl_count=1)
         else:
             u = state['dir'] == 'UP'
-            span = snaps[i - 1]['no_new_span'] + 1
-            if (H[i] > state['ext']) if u else (L[i] < state['ext']):   # O2 第 3 步：记新值
+            previous_span = snaps[i - 1]['no_new_span']
+            advanced = (H[i] > state['ext']) if u else (L[i] < state['ext'])
+            if advanced:            # O2 第 3 步：记新值
                 state['n'] += 1
                 state['ext'] = H[i] if u else L[i]
-                span = 0
                 ev.append(dict(kind='new', i=i, dir=state['dir'], n=state['n']))
             if (i - 2 > state['last_frac'] and all(L[i - 2] < L[t] for t in (i - 4, i - 3, i - 1, i))) if u else \
                (i - 2 > state['last_frac'] and all(H[i - 2] > H[t] for t in (i - 4, i - 3, i - 1, i))):
@@ -85,11 +85,13 @@ def small_run(bars):
                 state['last_frac'] = i - 2
                 state['hl'] += 1
                 ev.append(dict(kind='guard', i=i, dir=state['dir'], g=state['guard'], at=i - 2))
-            snaps[i] = dict(dir=state['dir'], n=state['n'], no_new_span=span,
-                            wave_age=i - state['birth'], hl_count=state['hl'])
             dead = (L[i] < state['guard']) if u else (H[i] > state['guard'])
+            span = 0 if advanced else previous_span if dead else previous_span + 1
+            snaps[i] = dict(dir=state['dir'], n=state['n'], no_new_span=span,
+                            wave_age=i - state['birth'] - int(dead), hl_count=state['hl'])
             if dead:
-                ev.append(dict(kind='dead', i=i, dir=state['dir'], n=state['n'], guard=state['guard']))
+                ev.append(dict(kind='dead', i=i, dir=state['dir'], n=state['n'], guard=state['guard'],
+                               final_span=span, wave_age=snaps[i]['wave_age']))
                 snaps[i] = None         # 死亡那根起归过渡区
                 last_dir, last_ext = state['dir'], state['ext']
                 state = None
@@ -110,6 +112,7 @@ def small_waves(ev):
             cur['n'] = e['n']
         elif e['kind'] == 'dead' and cur is not None:
             cur['d'] = e['i']
+            cur['final_span'] = e['final_span']
             cur = None
     return sw
 
