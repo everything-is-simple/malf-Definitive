@@ -3,6 +3,9 @@
 A 现稿：小波段的守护点 = 盘整低点，出生后不动。
 B 试跑：小波段的守护点出生时 = 盘整低点，之后每出一只新高，上移到"相邻两只新高之间的最低点"（镜像：新低）。
    大波段的守护点 = 相邻两个同向小波段顶之间的最低点，出现高过前顶的日线那根换过去。两种写法里丙不变。
+倒算继承（P28，2026-11-27）：旧大波段死的那根，如果已有一条反向的小波段活着，新大波段从那条小波段的出生那根算起，
+   读数 = 那条小波段到这一根已经记的只数（从出生那根按价格数到这一根），不取它的最终只数；since = 旧大波段死的那根（可知日）。
+   与 malf/core.py 的 big_run 同一写法；价格仍是未取整的 float 比较，和引擎的 P25 取整口径有临界差异。
 """
 import csv, json, os, sys, collections, statistics
 
@@ -113,6 +116,17 @@ def small_waves(s, ev):
     return sw
 
 
+def _refresh_count(P, b, e, up):
+    """P[b..e] 里刷新"到目前为止极值"的根数，出生那根记第 1 只（新值记录法）。与 malf/core.py 同一写法。"""
+    ext = P[b]
+    c = 1
+    for t in range(b + 1, e + 1):
+        if (P[t] > ext) if up else (P[t] < ext):
+            ext = P[t]
+            c += 1
+    return c
+
+
 def big_run(s, ev, SW):
     bars = rows[s]
     H = [float(r['high']) for r in bars]
@@ -156,8 +170,11 @@ def big_run(s, ev, SW):
             bigs.append(big)
             cur = SW[k] if k >= 0 and SW[k]['b'] <= i and (SW[k]['d'] is None or SW[k]['d'] >= i) else None
             if cur is not None and cur['dir'] != big['dir']:
-                big = dict(dir=cur['dir'], b=cur['b'], since=i, guard=cur['guard'], cnt=cur['n'], nsw=1, steps=0, by_kill=True,
-                             ext=(max(H[cur['b']:i + 1]) if cur['dir'] == 'UP' else min(L[cur['b']:i + 1])))
+                cu = cur['dir'] == 'UP'
+                # P28：继承的读数 = 旧大波段死这一根，小波段已经记到第几只，不取它的最终只数。
+                cnt0 = _refresh_count(H if cu else L, cur['b'], i, cu)
+                big = dict(dir=cur['dir'], b=cur['b'], since=i, guard=cur['guard'], cnt=cnt0, nsw=1, steps=0, by_kill=True,
+                             ext=(max(H[cur['b']:i + 1]) if cu else min(L[cur['b']:i + 1])), cnt0=cnt0)
                 tops, pending = [], None
             else:
                 big, tops, pending = None, [], None
@@ -206,6 +223,9 @@ for mode in ('A', 'B', 'C'):
     print('  同一份数据上的小波段 %d 条；只数 P10/P25/P50/P75/P90/P99 %s；' % (len(sns), [sns[int(q * len(sns))] for q in (.1, .25, .5, .75, .9, .99)]))
     print('  小波段分档', buckets(sns, sns))
     print('  一条大波段里有几条同向小波段 1/2/3/4+:', [round(c.get(k, 0) / len(ns), 3) for k in (1, 2, 3, 4)])
+    bk = [b for s in allb for b in allb[s] if b['by_kill']]
+    print('  倒算继承 %d 条（%.1f%%）；继承来的读数中位 %s' % (
+        len(bk), 100 * len(bk) / len(ns), statistics.median(b['cnt0'] for b in bk) if bk else None))
     print('  守护点抬过的大波段 %.1f%%' % (100 * sum(b['steps'] > 0 for s in allb for b in allb[s]) / len(ns)))
     big3 = [b for s in allb for b in allb[s] if b['nsw'] >= 3]
     if big3:

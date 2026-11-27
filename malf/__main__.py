@@ -13,7 +13,8 @@
   快照按时点，从可知日 since 起才写新大波段（malf/core.py big_snaps）；输出带 since / sd / by_kill。
 核对：小波段事件与 lab/p20_real_c.py 的 events.json 比结构；大波段与 nested.json 写法 C 比结构
       （只对参考文件里有的标的核对；比 dir/b/d/nsw/by_kill/换位，不比 cnt——
-      参考文件出自旧写法，倒算继承的 cnt 继承的是小波段最终只数）。
+      参考文件出自 2026-11-27 同步成 P28 口径的 lab/nested.py，同一份价格下与引擎逐条一致，
+      但它用未取整的 float 比较，_px 取整后只数会有少量临界差异）。
       注意：参考文件出自未量化的 float 比较，_px 取整后
       临界相等的边界情形可能产生少量结构分歧，属预期。
 数据：bars_all.csv = 全 A 股（库内 5581 只，2020-2024 窗口内有 K 线的 5328 只），后复权未舍入

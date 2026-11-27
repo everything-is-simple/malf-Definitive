@@ -13,6 +13,9 @@
 守护点哪一根换过去，两种读法都跑：
   prev  前顶 = 上一条同向小波段的顶（八步字面）；
   max   前顶 = 造出大波段最高价的那条小波段的顶（要过了大波段自己的顶才换）。
+倒算继承（P28，2026-11-27）：大波段死的那根如果已有一条反向的小波段活着，新大波段从那条小波段的出生那根算起，
+  读数 = 那条小波段到这一根已经记的只数（从出生那根按价格数到这一根），不取它的最终只数；since = 旧大波段死的那根（可知日）。
+  与 malf/core.py 的 big_run 同一写法；价格仍是未取整的 float 比较，和引擎的 P25 取整口径有临界差异。
 """
 import csv, json, os, sys, collections, statistics
 
@@ -121,6 +124,17 @@ def small_waves(ev):
     return sw
 
 
+def _refresh_count(P, b, e, up):
+    """P[b..e] 里刷新"到目前为止极值"的根数，出生那根记第 1 只（新值记录法）。与 malf/core.py 同一写法。"""
+    ext = P[b]
+    c = 1
+    for t in range(b + 1, e + 1):
+        if (P[t] > ext) if up else (P[t] < ext):
+            ext = P[t]
+            c += 1
+    return c
+
+
 def big_run(H, L, SW, policy):
     """大波段从小波段推。每一步的顺序：小波段出生 -> 大波段记新高 -> 过前顶换守护点 -> 大波段死没死 -> 小波段死了记顶。"""
     n = len(H)
@@ -157,8 +171,10 @@ def big_run(H, L, SW, policy):
             cur = SW[k] if k >= 0 and SW[k]['b'] <= i and (SW[k]['d'] is None or SW[k]['d'] >= i) else None
             if cur is not None and cur['dir'] != big['dir']:
                 cu = cur['dir'] == 'UP'
-                big = dict(dir=cur['dir'], b=cur['b'], since=i, guard=cur['guard'], cnt=cur['n'], nsw=1, by_kill=True,
-                           ext=max(H[cur['b']:i + 1]) if cu else min(L[cur['b']:i + 1]), sw=[k], moves=[], newbars=[], tops=[], cnt0=cur['n'])
+                # P28：继承的读数 = 旧大波段死这一根，小波段已经记到第几只，不取它的最终只数。
+                cnt0 = _refresh_count(H if cu else L, cur['b'], i, cu)
+                big = dict(dir=cur['dir'], b=cur['b'], since=i, guard=cur['guard'], cnt=cnt0, nsw=1, by_kill=True,
+                           ext=max(H[cur['b']:i + 1]) if cu else min(L[cur['b']:i + 1]), sw=[k], moves=[], newbars=[], tops=[], cnt0=cnt0)
                 tops, pend, maxtop = [], None, None
             else:
                 big = None
@@ -191,6 +207,8 @@ def report(allb, alls):
         len(bigs), sum(w['dir'] == 'UP' for w in bigs), sum(w['dir'] == 'DN' for w in bigs),
         statistics.median(ns), q(ns, .75), q(ns, .9), ns[-1], statistics.median(lens), q(lens, .9)))
     print('  分档 1 / 2-3 / 4-6 / 7-14 / 15+ 只:', [round(sum(1 for n in ns if lo <= n <= hi) / len(ns), 3) for lo, hi in ((1, 1), (2, 3), (4, 6), (7, 14), (15, 10 ** 9))])
+    bk = [w for w in bigs if w['by_kill']]
+    print('  倒算继承 %d 条（%.1f%%）；继承来的读数中位 %s' % (len(bk), 100 * len(bk) / len(bigs), statistics.median(w['cnt0'] for w in bk) if bk else None))
     print('  一条大波段里同向小波段 1/2/3/4+:', [round(c.get(k, 0) / len(bigs), 3) for k in (1, 2, 3, 4)])
     print('  守护点换过的大波段 %.1f%%；共换 %d 次：前顶就是大波段最高价的 %d 次，前顶更低（没过顶就死的小波段）%d 次' % (
         100 * sum(bool(w['moves']) for w in bigs) / len(bigs), len(moves), nm, len(moves) - nm))
