@@ -8,15 +8,18 @@
 - L6/L-T4 临终冻结：击穿那根不再加一（final_span = 前一根 no_new_span）
 - P20 盘整出生：停一根即盘整、门禁 = 盘整高值、出生守护 = 盘整低点、born 记第 1 只
 - 大波段八步：过前顶守护换到整段回调最低点、+1 加在大波段自己读数上
+- P28 倒算继承：继承的读数 = 旧大波段死那根小波段已记的只数（不是最终只数）；快照按时点
+- P28 截断重放：数据截到任意一天重跑，那天的大小两层快照 = 全量跑的快照
 - golden 快照：合成序列的事件流签名冻结（tests/golden_engine.json，重建用 GEN=1）
 """
 import json
 import os
+import random
 import sys
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from malf.core import _px, small_run, small_waves, big_run
+from malf.core import _px, small_run, small_waves, big_run, big_snaps
 
 GOLDEN = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'golden_engine.json')
 
@@ -199,6 +202,72 @@ class TestGoldenSnapshot(unittest.TestCase):
             (13.2, 11.1),                     # i23 仍活
         ]
         return [('d%02d' % i, 0, h, l, 0) for i, (h, l) in enumerate(seq)]
+
+
+class TestBigInheritP28(unittest.TestCase):
+    """P28（2026-11-27）：倒算继承的读数与快照时点。
+
+    手造（价格均为日线原价，进引擎前 ×100）：旧大波段 UP 从 i=0 起（守护 900）；
+    一条下跌小波段 i=4 出生，i=9 这根跌破 900，
+    旧大波段死，新大波段 DN 倒算继承（b=4, since=9）。小波段的 n 故意写成 99，
+    表示"最终只数"——引擎不得用它。
+      小波段自己的本子：i=4 第 1 只，i=6 第 2 只，i=8 第 3 只，i=9 第 4 只；i=11 第 5 只。
+    """
+
+    H = [1200, 1190, 1180, 1175, 1160, 1170, 1150, 1165, 1140, 1100, 1110, 1090, 1085]
+    L = [950, 960, 955, 940, 1000, 1010, 990, 995, 980, 895, 990, 890, 892]
+    SW = [dict(dir='UP', b=0, d=None, guard=90000, n=3),
+          dict(dir='DN', b=4, d=None, guard=200000, n=99)]
+
+    def _run(self, n=13):
+        H = [_px(x) for x in self.H[:n]]
+        L = [_px(x) for x in self.L[:n]]
+        bigs, alive = big_run(H, L, self.SW)
+        return H, L, bigs, alive, big_snaps(H, L, bigs, alive)
+
+    def test_inherit_count_is_count_at_kill(self):
+        _, _, bigs, alive, _ = self._run()
+        self.assertEqual(len(bigs), 1)                 # 旧大波段在 i=9 死
+        self.assertEqual((bigs[0]['d'], alive['by_kill']), (9, True))
+        self.assertEqual((alive['b'], alive['since']), (4, 9))
+        self.assertEqual(alive['cnt0'], 4)             # 死那根小波段已记 4 只，不是 99
+        self.assertEqual(alive['cnt'], 5)              # 之后 i=11 再记一只
+
+    def test_snaps_are_as_of(self):
+        _, _, _, _, snaps = self._run()
+        for i in range(4, 9):                          # 旧大波段死之前：仍是旧大波段
+            self.assertEqual(snaps[i]['dir'], 'UP')
+        self.assertEqual(snaps[9], dict(dir='DN', n=4, no_new_span=0, wave_age=5))
+        self.assertEqual(snaps[10], dict(dir='DN', n=4, no_new_span=1, wave_age=6))
+        self.assertEqual(snaps[11], dict(dir='DN', n=5, no_new_span=0, wave_age=7))
+        self.assertEqual(snaps[12], dict(dir='DN', n=5, no_new_span=1, wave_age=8))
+
+    @staticmethod
+    def _walk(seed=7, n=600):
+        """固定种子的随机游走日线（seed 7：约 27 条小波段、10 条大波段，其中 5 条倒算继承）。"""
+        rg = random.Random(seed)
+        c, bars = 100.0, []
+        for i in range(n):
+            o = c
+            c = max(5.0, c * (1 + rg.uniform(-0.045, 0.045)))
+            bars.append(('d%03d' % i, o, max(o, c) + rg.uniform(0, 0.6), min(o, c) - rg.uniform(0, 0.6), c))
+        return bars
+
+    def test_truncated_replay_equals_full(self):
+        """截断重放：截到任意一天重跑，那天的快照 = 全量跑的快照（大小两层）。"""
+        bars = self._walk()
+        n = len(bars)
+        H = [_px(b[2]) for b in bars]
+        L = [_px(b[3]) for b in bars]
+        ev, ss = small_run(bars)
+        bigs, alive = big_run(H, L, small_waves(ev))
+        bs = big_snaps(H, L, bigs, alive)
+        self.assertGreaterEqual(sum(1 for w in bigs + [alive] if w and w['by_kill']), 3)   # 走到多条倒算继承
+        for T in range(n):
+            ev2, ss2 = small_run(bars[:T + 1])
+            bigs2, alive2 = big_run(H[:T + 1], L[:T + 1], small_waves(ev2))
+            self.assertEqual(ss2[T], ss[T], '小波段快照 T=%d' % T)
+            self.assertEqual(big_snaps(H[:T + 1], L[:T + 1], bigs2, alive2)[T], bs[T], '大波段快照 T=%d' % T)
 
 
 if __name__ == '__main__':

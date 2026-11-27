@@ -29,8 +29,8 @@ bigs, alive = big_run(H, L, SW)
 if alive is not None:
     bigs = bigs + [alive]
 
-# Full-market dead small-wave pool (expanding window).
-fr = json.load(open(os.path.join(ROOT, 'data', 'processed', 'full_run', 'percentile_first.json'), encoding='utf-8'))
+# Full-market dead small-wave pool (expanding window). 2026-11-27 起读 P28 修正后的重跑结果。
+fr = json.load(open(os.path.join(ROOT, 'data', 'processed', 'full_run_1127', 'percentile_first.json'), encoding='utf-8'))
 pool = ExpandingPool(fr['small'])
 pct_n = [None] * n
 for i, r in enumerate(bars):

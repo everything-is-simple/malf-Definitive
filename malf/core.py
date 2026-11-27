@@ -118,11 +118,24 @@ def small_waves(ev):
     return sw
 
 
+def _refresh_count(P, b, e, up):
+    """P[b..e] 里刷新"到目前为止极值"的根数，出生那根记第 1 只（新值记录法）。up：上涨比最高价，下跌比最低价。"""
+    ext = P[b]
+    c = 1
+    for t in range(b + 1, e + 1):
+        if (P[t] > ext) if up else (P[t] < ext):
+            ext = P[t]
+            c += 1
+    return c
+
+
 def big_run(H, L, SW):
     """大波段从小波段推（八步 + 已签细则；前顶 = 上一条同向小波段）。
 
-    返回 (bigs, alive)。每条 big：dir, b, d, guard, cnt, nsw, by_kill, ext,
+    返回 (bigs, alive)。每条 big：dir, b, since, d, guard, cnt, nsw, by_kill, ext,
     sw(小波段下标), moves(换位记录), newbars, tops, cnt0。
+    b = 出生那根（倒算继承时早于 since，只作追溯起点）；since = 可知日（P28）：
+      非倒算的波段 since = b；倒算继承的波段 since = 旧大波段死的那根，这天之前它不存在。
     """
     n = len(H)
     bigs, big, tops, pend, maxtop, k = [], None, [], None, None, -1
@@ -158,8 +171,12 @@ def big_run(H, L, SW):
             cur = SW[k] if k >= 0 and SW[k]['b'] <= i and (SW[k]['d'] is None or SW[k]['d'] >= i) else None
             if cur is not None and cur['dir'] != big['dir']:
                 cu = cur['dir'] == 'UP'
-                big = dict(dir=cur['dir'], b=cur['b'], since=i, guard=cur['guard'], cnt=cur['n'], nsw=1, by_kill=True,
-                           ext=max(H[cur['b']:i + 1]) if cu else min(L[cur['b']:i + 1]), sw=[k], moves=[], newbars=[], tops=[], cnt0=cur['n'])
+                # P28：继承的读数 = 旧大波段死这一根，小波段已经记到第几只。
+                # 从它的出生那根数到这一根，不取它的最终只数（最终只数含这一根之后的新值）。
+                cnt0 = _refresh_count(H if cu else L, cur['b'], i, cu)
+                big = dict(dir=cur['dir'], b=cur['b'], since=i, guard=cur['guard'], cnt=cnt0, nsw=1, by_kill=True,
+                           ext=max(H[cur['b']:i + 1]) if cu else min(L[cur['b']:i + 1]),
+                           sw=[k], moves=[], newbars=[], tops=[], cnt0=cnt0)
                 tops, pend, maxtop = [], None, None
             else:
                 big = None
@@ -173,3 +190,32 @@ def big_run(H, L, SW):
             if is_max:
                 maxtop = top
     return bigs, big
+
+
+def big_snaps(H, L, bigs, alive=None):
+    """大波段逐 bar 快照，按时点（P28）。每根 dict(dir, n, no_new_span, wave_age)；没有大波段状态的 bar 为 None。
+
+    读数：从出生那根起，每根刷新大波段极值的日线记一只，出生那根记第 1 只（与 big_run 的 cnt 同口径）。
+    时点：倒算继承的波段（by_kill）在旧大波段死之前不可知，从可知日 since 起才写；
+    [b, since) 那几根仍是旧大波段的快照。出生那根未推进时长为 0，与小波段一致。
+    活到数据末的波段（alive）写到最后一根。
+    """
+    n = len(H)
+    snaps = [None] * n
+    for w in bigs + ([alive] if alive is not None else []):
+        P = H if w['dir'] == 'UP' else L
+        up = w['dir'] == 'UP'
+        end = w['d'] if w.get('d') is not None else n - 1
+        ext = P[w['b']]
+        cnt = span = 0
+        for i in range(w['b'], end + 1):
+            refresh = i == w['b'] or (P[i] > ext if up else P[i] < ext)
+            if refresh:
+                ext = P[i]
+                cnt += 1
+                span = 0
+            else:
+                span += 1
+            if i >= w['since']:
+                snaps[i] = dict(dir=w['dir'], n=cnt, no_new_span=span, wave_age=i - w['b'])
+    return snaps

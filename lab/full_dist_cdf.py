@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-"""编号图：314 只 与 全市场（5581 只）的分位池分布对比（CDF）。
-数据：data/processed/first_run/percentile_first.json（314 只）对 full_run/（全市场）。
+"""编号图：314 只 与 全市场（窗口内有 K 线的 5328 只）的分位池分布对比（CDF）。
+数据：data/processed/first_run_1127/percentile_first.json（314 只）对 full_run_1127/（全市场）。
+      可用两个命令行参数覆盖这两个路径。2026-11-27 起读 P28 修正后的重跑结果
+      （倒算继承的大波段只数按时点算，此前偏大）。
 输出：docs/malf-definitive-figs/fig-13-fullmarket-cdf.svg（图 13）
 口径：已死波段按方向分池；横轴截尾，纵轴 = 样本中 ≤x 的比例。
 """
@@ -10,8 +12,10 @@ from bisect import bisect_right
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.stdout.reconfigure(encoding='utf-8')
 
-A = json.load(open(os.path.join(ROOT, 'data', 'processed', 'first_run', 'percentile_first.json'), encoding='utf-8'))
-B = json.load(open(os.path.join(ROOT, 'data', 'processed', 'full_run', 'percentile_first.json'), encoding='utf-8'))
+PA = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, 'data', 'processed', 'first_run_1127', 'percentile_first.json')
+PB = sys.argv[2] if len(sys.argv) > 2 else os.path.join(ROOT, 'data', 'processed', 'full_run_1127', 'percentile_first.json')
+A = json.load(open(PA, encoding='utf-8'))
+B = json.load(open(PB, encoding='utf-8'))
 
 RED, GRN, GRAY = '#D40000', '#009944', '#777777'
 
@@ -73,7 +77,7 @@ def panel(px, py, title, curves, cap):
 o = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" role="img" font-family="var(--font-sans)" width="100%%">' % (W, Hh)]
 o.append('<title>314 只与全市场的分位池分布对比</title>'
          '<desc>四个面板各是已死波段池的累积分布：小波段最终只数、小波段临终未推进、大波段最终只数、大波段临终未推进。'
-         '红线上涨池、绿线下跌池；实线全市场 5581 只，虚线 314 只。两组曲线几乎重合。横轴截尾。</desc>')
+         '红线上涨池、绿线下跌池；实线全市场 5328 只，虚线 314 只。两组曲线几乎重合。横轴截尾。大波段只数为 2026-11-27 P28 修正后的口径。</desc>')
 
 for idx, (title, level, cap, step) in enumerate(PANELS):
     px, py = idx % 2, idx // 2
@@ -104,7 +108,7 @@ o.append('<text x="%d" y="%d" font-size="10" fill="#333">下跌池 DN</text>' % 
 o.append('<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="%s" stroke-width="1.6"/>' % (lx + 190, ly + 1, lx + 214, ly + 1, GRAY))
 o.append('<text x="%d" y="%d" font-size="10" fill="#333">实线 全市场（5,561,998 根）</text>' % (lx + 220, ly + 4))
 o.append('<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="%s" stroke-width="1.6" stroke-dasharray="5 3"/>' % (lx + 430, ly + 1, lx + 454, ly + 1, GRAY))
-o.append('<text x="%d" y="%d" font-size="10" fill="#333">虚线 314 只样本（341,593 根）</text>' % (lx + 460, ly + 4))
+o.append('<text x="%d" y="%d" font-size="10" fill="#333">虚线 314 只样本（342,750 根）</text>' % (lx + 460, ly + 4))
 o.append('<text x="%d" y="%d" font-size="10" fill="#999">2020-01-02 到 2024-12-31，日线，后复权。横轴截尾；纵轴 = 池内 ≤x 的比例。</text>' % (40, Hh - 8))
 
 o.append('</svg>')
